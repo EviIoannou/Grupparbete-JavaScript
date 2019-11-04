@@ -66,7 +66,6 @@ function render () {
         div.appendChild(button)
         thisValue++;
     });
-
 }
 
 body[0].addEventListener("click", (e) => {
