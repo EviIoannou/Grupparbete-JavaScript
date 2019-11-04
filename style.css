@@ -31,7 +31,6 @@ article {
   grid-template-columns: auto auto auto auto;
   grid-template-rows: auto auto auto;
   grid-gap: 1em;
-  width: 70%;
 }
 
 article .station {
@@ -51,10 +50,15 @@ flex-direction: column;
 align-items: center;
 }
 
+
 .hidden {
   display: none;
 }
 
+
+#form div{
+  padding: 0.5em;
+}
 
 /* Adjust to small screens*/
 @media screen and (max-width: 375px){
@@ -66,7 +70,6 @@ article {/*grid for mobile*/
   grid-template-columns: auto auto auto ;
   grid-template-rows: auto auto auto auto auto;
   grid-gap: 1em;
-  width: 70%;
 }
 
 /* padding and margin*/
@@ -78,5 +81,6 @@ article div{
 }
 .topnav{
   margin-bottom: 0.5em;
+  width: 50vw;
 }
 }

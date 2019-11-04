@@ -19,21 +19,18 @@
       <label for="start">To:</label>
       <input type="date" id="end" name="endDate" min="1990-01-01" max="2019-11-14">
     </div>
-    <div id="menu">
+    <div id="stationer">
+      <label for="station">Välj station</label>
       <select name="station" id="station">
-        <option value="1">Agnesberg</option>
-        <option value="2">Arketjärn</option>
-        <option value="3">Eriksberg</option>
+        <option value="default">Station</option>
       </select>
     </div>
-    <div id="radioButtons">
-        <label for="attribute 1">attribute 1</label>
-        <input type="radio" value="attribute" name="attribute 1">
-        <label for="attribute 2">attribute 2</label>
-        <input type="radio" value="attribute" name="attribute 2">
-        <label for="attribute 3">attribute 3</label>
-        <input type="radio" value="attribute" name="attribute 3">
-      </div>
+    <div id="attributer">
+ <label for="attributes">Välj attribut</label>
+    <select name="attributes" id="attributes">
+      <option value="default">Attribut</option>
+    </select>
+    </div>
       <div id="submit">
     <button id="getMe">Get data</button>
 </div>
