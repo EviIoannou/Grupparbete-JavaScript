@@ -39,7 +39,7 @@ function render () {
 
         station.MeasureParameters.forEach(parameter => {
             if (parameter.Code == "Tapping") {
-                tapping = parameter.CurrentValue
+                tapping = "Flöde: " + parameter.CurrentValue + "m<sup>2</sup>/s"
             }
         });
     
@@ -49,7 +49,7 @@ function render () {
         div.classList.add("station");
         div.setAttribute("id", thisValue);
         div.innerHTML = `<div>${station.Description} </div>
-                        <div>Flöde: ${tapping} </div>`;
+                        <div>${tapping} </div>`;
         main.appendChild(div);
 
         station.MeasureParameters.forEach(parameter => {
@@ -67,39 +67,6 @@ function render () {
         thisValue++;
     });
 
-    // res.forEach(station => {
-    //     let tapping = "Ingen flöde data finns";
-
-    //     let div = document.createElement("div");
-    //     div.classList.add("station");
-    //     div.setAttribute("id", thisValue);
-    //     div.innerHTML = `<div id>${station.Description} </div>`;
-
-    //     let button = document.createElement("button");
-    //     button.innerHTML = "See details";
-
-    //     station.MeasureParameters.forEach(parameter => {
-    //         let info = document.createElement("div");
-
-    //         if (parameter.Code == "Tapping") {
-    //             tapping = "Flöde: " + parameter.CurrentValue;
-    //             // info.innerText = parameter.Description + ": " + tapping;
-    //             info.innerText = tapping;
-    //         } else {
-    //             info.classList.add("hidden");
-    //             info.innerText = parameter.Description + ": " + parameter.CurrentValue;
-    //         }
-
-    //         div.appendChild(info);
-    //     });
-        
-    //     console.log(tapping);
-
-
-    //     main.appendChild(div);
-    //     div.appendChild(button)
-    //     thisValue++;
-    // });
 }
 
 body[0].addEventListener("click", (e) => {
