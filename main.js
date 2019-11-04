@@ -11,7 +11,24 @@ console.log(res);
 })
 .then (function() {
     render();
+    res.forEach(r=>{  //funktion för att skapa val till stationer
+  let select= document.getElementById("station");
+  let option= document.createElement("option");
+  option.innerHTML=r.Code;
+  option.value=r.Code;
+  select.appendChild(option);
+});
+  let alternativ=["Flow", "Level", "LevelDownstream", "Tapping", "RainFall"];
+  alternativ.forEach(alt=>{
+    let choices= document.getElementById("attributes");
+    let option= document.createElement("option");
+    option.innerHTML=alt;
+    option.value=alt;
+    choices.appendChild(option);
   })
+})
+  
+
 
 function render () {
 
