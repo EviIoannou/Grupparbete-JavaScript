@@ -39,8 +39,9 @@ function render () {
 
         station.MeasureParameters.forEach(parameter => {
             if (parameter.Code == "Tapping") {
-                tapping = parameter.CurrentValue
+                tapping = "Flöde: " + parameter.CurrentValue + "m<sup>2</sup>/s"
             }
+            
         });
     
         console.log(tapping);
@@ -49,7 +50,7 @@ function render () {
         div.classList.add("station");
         div.setAttribute("id", thisValue);
         div.innerHTML = `<div>${station.Description} </div>
-                        <div>Flöde: ${tapping} </div>`;
+                        <div>${tapping} </div>`;
         main.appendChild(div);
 
         station.MeasureParameters.forEach(parameter => {
@@ -66,6 +67,7 @@ function render () {
         div.appendChild(button)
         thisValue++;
     });
+
 }
 
 body[0].addEventListener("click", (e) => {
