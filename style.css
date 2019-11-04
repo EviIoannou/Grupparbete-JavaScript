@@ -50,9 +50,16 @@ flex-direction: column;
 align-items: center;
 }
 
+
+.hidden {
+  display: none;
+}
+
+
 #form div{
   padding: 0.5em;
 }
+
 /* Adjust to small screens*/
 @media screen and (max-width: 375px){
 body{
