@@ -18,7 +18,7 @@ function render () {
     let thisValue = 0;
 
     res.forEach(station => {
-        let tapping = "No currently available data";
+        let tapping = "Ingen flöde data finns";
 
         station.MeasureParameters.forEach(parameter => {
             if (parameter.Code == "Tapping") {
@@ -34,6 +34,15 @@ function render () {
         div.innerHTML = `<div>${station.Description} </div>
                         <div>Flöde: ${tapping} </div>`;
         main.appendChild(div);
+
+        station.MeasureParameters.forEach(parameter => {
+            if (parameter.Code != "Tapping") {
+               let info = document.createElement("div");
+               info.classList.add("hidden");
+               info.innerHTML = parameter.Description + ": " + parameter.CurrentValue; 
+               div.appendChild(info);
+            }
+        });
 
         let button = document.createElement("button");
         button.innerHTML = "See details";
