@@ -1,6 +1,5 @@
 .topnav {
   background: white;
-  overflow: hidden;
   margin-bottom: 2em;
   background-size: cover;
   background-repeat: no-repeat;
@@ -20,7 +19,7 @@ body{
 }
 
 header h1 {
-  margin: 1.5em;
+  margin: 1em;
 }
 
 main {
@@ -35,7 +34,7 @@ article {
   width: 70%;
 }
 
-article div {
+article .station {
   border: solid 0.1em rgb(77, 10, 10);
 }
 article button{
@@ -43,15 +42,9 @@ article button{
   margin: 1em;
 }
 
-footer div{
-  margin: 0.5em;
+article div{
+  padding: 0.5em;
 }
-
-footer{
-border: solid 0.1em rgb(77, 10, 10);
-margin-top: 3em;
-margin-bottom: 0;}
-
 #form{
 display: flex;
 flex-direction: column;
@@ -65,11 +58,22 @@ align-items: center;
 body{
   font-size:70%;
 }
-article {
+article {/*grid for mobile*/
   display: grid;
   grid-template-columns: auto auto auto ;
   grid-template-rows: auto auto auto auto auto;
   grid-gap: 1em;
   width: 70%;
+}
+
+/* padding and margin*/
+article div{
+  padding-left:0;
+  padding-right: 0;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+.topnav{
+  margin-bottom: 0.5em;
 }
 }
