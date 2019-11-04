@@ -32,7 +32,10 @@ function render () {
                         <div>Flöde: ${tapping} </div>`
         ;
         main.appendChild(div);
-        
+        let button = document.createElement("button");
+      button.innerHTML = "See details";
+      div.appendChild(button)
+    
     });
 
 }
