@@ -1,3 +1,16 @@
+.topnav {
+  background: white;
+  overflow: hidden;
+  margin-bottom: 2em;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 1em;
+  text-align: center
+}
+section{
+  border: solid 0.1em black;
+ 
+}
 body{
   display: flex;
   flex-direction: column;
