@@ -41,6 +41,7 @@ function render () {
             if (parameter.Code == "Tapping") {
                 tapping = "Flöde: " + parameter.CurrentValue + "m<sup>2</sup>/s"
             }
+            
         });
     
         console.log(tapping);
