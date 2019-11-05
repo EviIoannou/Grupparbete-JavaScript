@@ -11,7 +11,7 @@
 <body>
 <div class="topnav">
   <section id="form">
-    <h2>Get data</h2>
+      <h2>Få specific data från valfri mätstation</h2>
     <!-- user input form -->
     <div id="dates">
       <label for="start">From:</label>
@@ -26,13 +26,25 @@
       </select>
     </div>
     <div id="attributer">
- <label for="attributes">Välj attribut</label>
+ <!-- <label for="attributes">Välj attribut</label>
     <select name="attributes" id="attributes">
       <option value="default">Attribut</option>
     </select>
     </div>
       <div id="submit">
     <button id="getMe">Get data</button>
+</div> -->
+<div>
+    <input type="radio" name="alternativ" value="Flow">Flöden
+    <input type="radio" name="alternativ" value="Rainfall">Nederbörd
+    <input type="radio" name="alternativ" value="Tapping">Tappning
+    <input type="radio" name="alternativ" value="level">Nivå
+    <input type="radio" name="alternativ" value="LevelDownstream">Nivå nedströms
+    <br>
+    <button type="button" onclick="specificData()">
+        Submit
+    </button>
+    <br>
 </div>
 </section>
 </div>
