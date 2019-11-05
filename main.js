@@ -63,8 +63,9 @@ function render () {
         });
 
         let button = document.createElement("button");
-        button.innerHTML = "See details";
-        div.appendChild(button)
+        button.innerHTML = "Se detajler";
+        button.classList.add("details");
+        div.appendChild(button);
         thisValue++;
     });
 
@@ -76,19 +77,24 @@ body[0].addEventListener("click", (e) => {
     console.log(e.target);
     console.log(e.target.parentNode);
 
-    if (e.target.nodeName == "BUTTON") {
-        let index = e.target.parentNode;
-        
-
-
+    if (e.target.className == "details") {
+      let index=e.target.parentNode;
+      let hidden=index.querySelectorAll(".hidden");
+      hidden.forEach(hid=>{
+      hid.classList.remove("hidden");
+      hid.classList.add("show");
+      });
+      e.target.classList.remove("details");
+      e.target.classList.add("less");
+      e.target.innerHTML="Clear"
     }
-
-
-
-
-
-
-
-
-
-})
+  else if(e.target.className=="less"){
+    let index=e.target.parentNode;
+      let hidden=index.querySelectorAll(".show");
+      hidden.forEach(hid=>{
+      hid.classList.add("hidden")
+      });
+      e.target.classList.remove("less");
+      e.target.classList.add("details");
+      e.target.innerHTML="Se detajler"
+  }})
