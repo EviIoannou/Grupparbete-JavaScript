@@ -98,7 +98,7 @@ body[0].addEventListener("click", (e) => {
           e.target.innerHTML="Se detajler"
   }})
 
-});
+
 
 
 function specificData(){
