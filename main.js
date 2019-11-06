@@ -1,6 +1,9 @@
 var res;
 var main = document.getElementById("molndalStations");
 var body = document.getElementsByTagName("body");
+var dateToday = (new Date()).toISOString();
+var startDate = document.getElementById("start");
+var endDate = document.getElementById("end");
 
 fetch("http://data.goteborg.se/RiverService/v1.1/MeasureSites/66473147-1c20-40c1-b1f9-6d18f1e620bf?format=json")
 .then( response => {
@@ -82,9 +85,25 @@ function render () {
     });
 }
 
+
 var station = document.getElementById("station");
 var attributer = document.getElementById("attributer");
 var h4 = document.getElementsByTagName("p");
+
+
+function defaultDates() {
+    let t = dateToday.indexOf("T");
+    let defaultToday = dateToday.slice(0,t);
+
+    let year = dateToday[3];
+    let lastyear = year - "1";
+    let defaultStart = defaultToday.replace(year, lastyear);
+
+    endDate.value = defaultToday;
+    startDate.value = defaultStart;
+}
+
+defaultDates();
 
 
 body[0].addEventListener("click", (e) => {
