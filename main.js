@@ -53,14 +53,30 @@ function render () {
                         <div>${tapping} </div>`;
         main.appendChild(div);
 
+        if (station.SG) {
+            let dg = document.createElement("div");
+            let sg = document.createElement("div");
+            dg.classList.add("hidden");
+            sg.classList.add("hidden");
+            dg.innerHTML = "Övre nivå: " + station.DG;
+            sg.innerHTML = "Undre nivå: " + station.SG;
+            div.appendChild(dg);
+            div.appendChild(sg);
+        }
+
         station.MeasureParameters.forEach(parameter => {
-            if (parameter.Code != "Tapping") {
+            if ( (parameter.Code != "Tapping") && (parameter.Code != "Flow")) {
                let info = document.createElement("div");
                info.classList.add("hidden");
-               info.innerHTML = parameter.Description + ": " + parameter.CurrentValue; 
+               if (parameter.Code == "Level") { //used "Level" in case 
+                    info.innerHTML = "Aktuell Nivå: " + parameter.CurrentValue; 
+               } else {
+                   info.innerHTML = parameter.Description + ": " + parameter.CurrentValue; 
+               }   
                div.appendChild(info);
             }
         });
+
 
         let button = document.createElement("button");
         button.innerHTML = "Se detajler";
@@ -85,7 +101,7 @@ body[0].addEventListener("click", (e) => {
       });
       e.target.classList.remove("details");
       e.target.classList.add("less");
-      e.target.innerHTML="Clear"
+      e.target.innerHTML="Göm detaljer"
     } else if(e.target.className=="less"){
         let index=e.target.parentNode;
           let hidden=index.querySelectorAll(".show");
@@ -94,7 +110,7 @@ body[0].addEventListener("click", (e) => {
           });
           e.target.classList.remove("less");
           e.target.classList.add("details");
-          e.target.innerHTML="Se detajler"
+          e.target.innerHTML="Se detaljer"
   }})
 
 
