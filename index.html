@@ -27,16 +27,16 @@
         </select>
       </div>
       <div id="attributer">
-          <input type="radio" name="alternativ" value="Flow">Flöden
-          <input type="radio" name="alternativ" value="Rainfall">Nederbörd
-          <input type="radio" name="alternativ" value="Tapping">Tappning
-          <input type="radio" name="alternativ" value="level">Nivå
-          <input type="radio" name="alternativ" value="LevelDownstream">Nivå nedströms
-          <br>
-          <button type="button" onclick="specificData()">
-            Submit
-          </button>
-          <br>
+        <input type="radio" name="alternativ" value="Flow">Flöden
+        <input type="radio" name="alternativ" value="Rainfall">Nederbörd
+        <input type="radio" name="alternativ" value="Tapping">Tappning
+        <input type="radio" name="alternativ" value="level">Nivå
+        <input type="radio" name="alternativ" value="LevelDownstream">Nivå nedströms
+        <br>
+        <button type="button" onclick="specificData()">
+          Submit
+        </button>
+        <br>
       </div>
     </section>
   </div>
@@ -44,6 +44,16 @@
     <h1>Mölndalsån data</h1>
   </header>
   <main>
+    <div id="table">
+      <table class="hidden" id="valfriData">
+        <tr id="titles">
+          <th id="title">Station</th>
+          <th id="attributeName">Attribut</th>
+          <th id="value">Värde</th>
+          <th id="valfriDate">Datum</th>
+        </tr>
+      </table>
+    </div>
     <article id="molndalStations">
     </article>
   </main>

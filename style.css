@@ -60,6 +60,11 @@ align-items: center;
   padding: 0.5em;
 }
 
+#valfriData {
+  border: solid 0.2em brown;
+  margin-bottom: 0.5em;
+}
+
 /* Adjust to small screens*/
 @media screen and (max-width: 375px){
 body{
