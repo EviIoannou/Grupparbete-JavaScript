@@ -150,22 +150,12 @@ function specificData() {
       } else {
         //create a table
         let table = document.getElementById("valfriData");
-        let stationInfo= document.createElement("tr");
-        let name= document.createElement("td");
-        name.innerHTML= valdstation;
-         let att= document.createElement("td");
-        att.innerHTML= `${val}`;
-        stationInfo.appendChild(name);
-        stationInfo.appendChild(att);
-        table.appendChild(stationInfo);
         table.classList.remove("hidden");
 
 console.log(valdstation);
 
-
-
         newRes.forEach(r => {
-          //show the date and appropriate value on screen;
+          //show the dates and appropriate value;
           let time = r.TimeStamp.replace("/Date(", "");
           num = time.replace(")/", "");
           let miliSec = parseInt(num);
@@ -175,8 +165,23 @@ console.log(valdstation);
           let year = date.getFullYear();
 
           let value = r.Value;
-
-          //insert info into table
+            //insert info into table
+          let stationInfo= document.createElement("tr");
+          let name= document.createElement("td");
+          name.innerHTML= valdstation;
+          let datum = document.createElement("td");
+          datum.innerHTML= day + "/ " + month + "/ " + year;
+          let att= document.createElement("td");
+          att.innerHTML= `${val}`;
+          let v= document.createElement("td");
+          v.innerHTML= value;
+          
+          stationInfo.appendChild(name);
+          stationInfo.appendChild(datum);
+          stationInfo.appendChild(att);
+          stationInfo.appendChild(v);
+          table.appendChild(stationInfo);
+          
         
 
           console.log(day + " " + month + " " + year + " " + `${val}` + " " + value)

@@ -60,11 +60,16 @@ align-items: center;
   padding: 0.5em;
 }
 
-#valfriData {
-  border: solid 0.2em brown;
-  margin-bottom: 0.5em;
+#valfriData th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align: center;
 }
 
+#valfriData{
+  margin-bottom: 1em;
+  width: 70vw;
+}
 /* Adjust to small screens*/
 @media screen and (max-width: 375px){
 body{
