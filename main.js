@@ -19,17 +19,8 @@ console.log(res);
   option.value=r.Code;
   select.appendChild(option);
 });
-  // let alternativ=["Flow", "Level", "LevelDownstream", "Tapping", "RainFall"];
-  // alternativ.forEach(alt=>{
-  //   let choices= document.getElementById("attributes");
-  //   let option= document.createElement("option");
-  //   option.innerHTML=alt;
-  //   option.value=alt;
-  //   choices.appendChild(option);
-  // })
 })
   
-
 
 function render () {
     let thisValue = 0;
@@ -113,13 +104,11 @@ body[0].addEventListener("click", (e) => {
           e.target.innerHTML="Se detaljer"
   }})
 
-
-
-
 function specificData(){
   let station = document.getElementById("station").selectedIndex;
+  console.log(station);
   let valdstation = document.getElementsByTagName("option")[station].value;
-
+  
   var ele = document.getElementsByName('alternativ');
   for (i = 0; i < ele.length; i++) {
       if (ele[i].checked)
@@ -131,7 +120,29 @@ function specificData(){
   var y = document.getElementById("end")
   var yv = y.value
   
-  console.log( "http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
-
+//console.log( "http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
+fetch("http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
+.then( response => {
+  return response.json();
+})
+.then(newRes=>{
+  if (newRes.length == 0) {
+    console.log("no data")
+  }
+  else {
+    newRes.forEach(r => {
+      //show the date on screen; what if there is no data for some of the dates only? Error message?
+      let time = r.TimeStamp.replace("/Date(", "");
+      num = time.replace(")/", "");
+      let miliSec = parseInt(num);
+      let date = new Date(miliSec);
+      let day= date.getDate();
+      let month= date.getMonth();
+      let year= date.getFullYear();
+      
+      let value = r.Value;
+      console.log(day + " " + month + " " + year + " " + `${val}` + " " + value)
+    });
+  }
+})
 }
-
