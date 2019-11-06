@@ -4,7 +4,8 @@
   background-size: cover;
   background-repeat: no-repeat;
   padding: 1em;
-  text-align: center
+  text-align: center;
+  width: 70%;
 }
 section{
   border: solid 0.1em black;
@@ -59,6 +60,16 @@ align-items: center;
 #form div{
   padding: 0.5em;
 }
+
+#attributer > span {
+  margin: 0.5em;
+}
+
+h4 {
+  padding: 0;
+  margin: 0;
+}
+
 
 /* Adjust to small screens*/
 @media screen and (max-width: 375px){
