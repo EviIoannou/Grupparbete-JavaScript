@@ -224,7 +224,7 @@ body[0].addEventListener("click", (e) => {
                   //insert info into table
                 let stationInfo= document.createElement("tr");
                 let name= document.createElement("td");
-                name.innerHTML= valdstation;
+                name.innerHTML= res[station - 1].Description;
                 let datum = document.createElement("td");
                 datum.innerHTML= day + "/ " + month + "/ " + year;
                 let att= document.createElement("td");
