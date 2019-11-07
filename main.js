@@ -15,60 +15,73 @@ fetch("http://data.goteborg.se/RiverService/v1.1/MeasureSites/66473147-1c20-40c1
   })
   .then(function () {
     render();
-    res.forEach(r => { //funktion för att skapa val till stationer
-      let select = document.getElementById("station");
-      let option = document.createElement("option");
-      option.innerHTML = r.Code;
-      option.value = r.Code;
-      select.appendChild(option);
-    });
   })
 
 
-function render() {
-  let thisValue = 0;
-
-  res.forEach(station => {
-    let tapping = "Ingen flöde data finns";
-
-    station.MeasureParameters.forEach(parameter => {
-      if (parameter.Code == "Tapping") {
-        tapping = "Flöde: " + parameter.CurrentValue + "m<sup>2</sup>/s"
-      }
-
+function render () {
+    let thisValue = 0;
+    
+    res.forEach(station => {
+        let tapping = "Ingen flöde data finns";
+        
+        station.MeasureParameters.forEach(parameter => {
+            if (parameter.Code == "Tapping") {
+                tapping = "Flöde: " + parameter.CurrentValue + "m<sup>2</sup>/s"
+            }
+            
+        });
+        
+        console.log(tapping);
+        
+        let div = document.createElement("div");
+        div.classList.add("station");
+        div.setAttribute("id", thisValue);
+        div.innerHTML = `<div>${station.Description} </div>
+        <div>${tapping} </div>`;
+        main.appendChild(div);
+        
+        if (station.SG) {
+            let dg = document.createElement("div");
+            let sg = document.createElement("div");
+            dg.classList.add("hidden");
+            sg.classList.add("hidden");
+            dg.innerHTML = "Övre nivå: " + station.DG;
+            sg.innerHTML = "Undre nivå: " + station.SG;
+            div.appendChild(dg);
+            div.appendChild(sg);
+        }
+        
+        station.MeasureParameters.forEach(parameter => {
+            if ( (parameter.Code != "Tapping") && (parameter.Code != "Flow")) {
+                let info = document.createElement("div");
+                info.classList.add("hidden");
+                if (parameter.Code == "Level") { //used "Level" in case 
+                info.innerHTML = "Aktuell Nivå: " + parameter.CurrentValue; 
+            } else {
+                info.innerHTML = parameter.Description + ": " + parameter.CurrentValue; 
+            }   
+            div.appendChild(info);
+        }
+    });
+    
+    
+    let button = document.createElement("button");
+    button.innerHTML = "Se detajler";
+    button.classList.add("details");
+    div.appendChild(button);
+    thisValue++;
+    
     });
 
-    console.log(tapping);
-
-    let div = document.createElement("div");
-    div.classList.add("station");
-    div.setAttribute("id", thisValue);
-    div.innerHTML = `<div>${station.Description} </div>
-                        <div>${tapping} </div>`;
-    main.appendChild(div);
-
-    if (station.SG) {
-      let dg = document.createElement("div");
-      let sg = document.createElement("div");
-      dg.classList.add("hidden");
-      sg.classList.add("hidden");
-      dg.innerHTML = "Övre nivå: " + station.DG;
-      sg.innerHTML = "Undre nivå: " + station.SG;
-      div.appendChild(dg);
-      div.appendChild(sg);
-    }
-
-    station.MeasureParameters.forEach(parameter => {
-      if ((parameter.Code != "Tapping") && (parameter.Code != "Flow")) {
-        let info = document.createElement("div");
-        info.classList.add("hidden");
-        if (parameter.Code == "Level") { //used "Level" in case 
-          info.innerHTML = "Aktuell Nivå: " + parameter.CurrentValue;
-        } else {
-          info.innerHTML = parameter.Description + ": " + parameter.CurrentValue;
-        }
-        div.appendChild(info);
-      }
+    // att skapa val till stationer
+    let count = 0;
+    res.forEach(r=>{  
+        let select= document.getElementById("station");
+        let option= document.createElement("option");
+        option.innerHTML=r.Description;
+        option.value=count;
+        count++;
+        select.appendChild(option);
     });
 
 
@@ -79,6 +92,11 @@ function render() {
     thisValue++;
   });
 }
+
+
+var station = document.getElementById("station");
+var attributer = document.getElementById("attributer");
+var h4 = document.getElementsByTagName("p");
 
 
 function defaultDates() {
@@ -95,11 +113,14 @@ function defaultDates() {
 
 defaultDates();
 
-body[0].addEventListener("click", (e) => {
 
-  console.log(e);
-  console.log(e.target);
-  console.log(e.target.parentNode);
+
+body[0].addEventListener("click", (e) => {
+    
+    console.log(e);
+    console.log(e.target);
+   
+    console.log(e.target.parentNode);
 
   if (e.target.className == "details") {
     let index = e.target.parentNode;
@@ -107,26 +128,56 @@ body[0].addEventListener("click", (e) => {
     hidden.forEach(hid => {
       hid.classList.remove("hidden");
       hid.classList.add("show");
-    });
-    e.target.classList.remove("details");
-    e.target.classList.add("less");
-    e.target.innerHTML = "Göm detaljer"
-  } else if (e.target.className == "less") {
-    let index = e.target.parentNode;
-    let hidden = index.querySelectorAll(".show");
-    hidden.forEach(hid => {
-      hid.classList.add("hidden")
-    });
-    e.target.classList.remove("less");
-    e.target.classList.add("details");
-    e.target.innerHTML = "Se detaljer"
-  }
+      });
+      e.target.classList.remove("details");
+      e.target.classList.add("less");
+      e.target.innerHTML="Göm detaljer"
+    } else if(e.target.className=="less"){
+        let index=e.target.parentNode;
+          let hidden=index.querySelectorAll(".show");
+          hidden.forEach(hid=>{
+          hid.classList.add("hidden")
+          });
+          e.target.classList.remove("less");
+          e.target.classList.add("details");
+          e.target.innerHTML="Se detaljer"
+    }
+
+    //att skapa användarens alternativ dynamiskt
+    if (e.target.id == "station") {
+        let stationIndex = parseInt(e.target.value);
+        attributer.innerHTML = "";
+        let heading= document.getElementsByTagName("h4");
+        console.log(heading);
+        heading[0].classList.remove("hidden"); 
+        res[stationIndex].MeasureParameters.forEach( parameter => {
+            let div = document.createElement("span");
+            let label = document.createElement("label");
+            let input = document.createElement("input");
+
+            label.setAttribute("for", (parameter.Code + stationIndex));
+            label.innerHTML = parameter.Description
+
+            input.type = "radio";
+            input.name = "alternativ";
+            input.value = parameter.Code;
+            input.id = parameter.Code + stationIndex;
+            input.appendChild(document.createTextNode(parameter.Description));
+           
+            
+            div.appendChild(input);
+            div.appendChild(label);
+            attributer.appendChild(div);
+        })
+
+    }
+
 })
 
-function specificData() {
+function specificData(){
   let station = document.getElementById("station").selectedIndex;
   console.log(station);
-  let valdstation = document.getElementsByTagName("option")[station].value;
+  let valdstation = document.getElementsByTagName("option")[station].innerHTML; //för att .value är nu en siffra, då funkar det inte att använda i länken nedan
 
   var ele = document.getElementsByName('alternativ');
   for (i = 0; i < ele.length; i++) {

@@ -4,7 +4,8 @@
   background-size: cover;
   background-repeat: no-repeat;
   padding: 1em;
-  text-align: center
+  text-align: center;
+  width: 70%;
 }
 section{
   border: solid 0.1em black;
@@ -60,6 +61,7 @@ align-items: center;
   padding: 0.5em;
 }
 
+
 #valfriData th, td {
   border: 1px solid black;
   border-collapse: collapse;
@@ -70,6 +72,18 @@ align-items: center;
   margin-bottom: 1em;
   width: 70vw;
 }
+
+#attributer > span {
+  margin: 0.5em;
+}
+
+h4 {
+  padding: 0;
+  margin: 0;
+  font-weight: normal;
+}
+
+
 /* Adjust to small screens*/
 @media screen and (max-width: 375px){
 body{
