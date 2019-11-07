@@ -147,25 +147,28 @@ body[0].addEventListener("click", (e) => {
         let heading= document.getElementsByTagName("h4");
         console.log(heading);
         heading[0].classList.remove("hidden"); 
-        res[stationIndex].MeasureParameters.forEach( parameter => {
-            let div = document.createElement("span");
-            let label = document.createElement("label");
-            let input = document.createElement("input");
 
-            label.setAttribute("for", (parameter.Code + stationIndex));
-            label.innerHTML = parameter.Description
+        if (stationIndex >= 0) {
+            res[stationIndex].MeasureParameters.forEach( parameter => {
+                let div = document.createElement("span");
+                let label = document.createElement("label");
+                let input = document.createElement("input");
 
-            input.type = "radio";
-            input.name = "alternativ";
-            input.value = parameter.Code;
-            input.id = parameter.Code + stationIndex;
-            input.appendChild(document.createTextNode(parameter.Description));
-           
+                label.setAttribute("for", (parameter.Code + stationIndex));
+                label.innerHTML = parameter.Description
+
+                input.type = "radio";
+                input.name = "alternativ";
+                input.value = parameter.Code;
+                input.id = parameter.Code + stationIndex;
+                input.appendChild(document.createTextNode(parameter.Description));
             
-            div.appendChild(input);
-            div.appendChild(label);
-            attributer.appendChild(div);
-        })
+                
+                div.appendChild(input);
+                div.appendChild(label);
+                attributer.appendChild(div);
+            })
+        }
 
     }
 
