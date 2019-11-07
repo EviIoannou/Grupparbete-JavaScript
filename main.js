@@ -80,7 +80,7 @@ function render () {
         let option= document.createElement("option");
         option.innerHTML=r.Description;
         option.value=count;
-        count++
+        count++;
         select.appendChild(option);
     });
 }
@@ -138,7 +138,9 @@ body[0].addEventListener("click", (e) => {
     if (e.target.id == "station") {
         let stationIndex = parseInt(e.target.value);
         attributer.innerHTML = "";
-        //h4[0].classList.remove("hidden"); om vi vill ha en heading här
+        let heading= document.getElementsByTagName("h4");
+        console.log(heading);
+        heading[0].classList.remove("hidden"); 
         res[stationIndex].MeasureParameters.forEach( parameter => {
             let div = document.createElement("span");
             let label = document.createElement("label");
@@ -166,7 +168,7 @@ body[0].addEventListener("click", (e) => {
 function specificData(){
   let station = document.getElementById("station").selectedIndex;
   console.log(station);
-  let valdstation = document.getElementsByTagName("option")[station].value;
+  let valdstation = document.getElementsByTagName("option")[station].innerHTML; //för att .value är nu en siffra, då funkar det inte att använda i länken nedan
   
   var ele = document.getElementsByName('alternativ');
   for (i = 0; i < ele.length; i++) {
