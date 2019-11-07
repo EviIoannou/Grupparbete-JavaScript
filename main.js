@@ -79,18 +79,12 @@ function render () {
         let select= document.getElementById("station");
         let option= document.createElement("option");
         option.innerHTML=r.Description;
-        option.value=count;
+        option.value=r.Code;
+        option.id = count;
         count++;
         select.appendChild(option);
     });
 
-
-    let button = document.createElement("button");
-    button.innerHTML = "Se detajler";
-    button.classList.add("details");
-    div.appendChild(button);
-    thisValue++;
-  });
 }
 
 
@@ -113,7 +107,8 @@ function defaultDates() {
 
 defaultDates();
 
-
+var choose = document.getElementById("choose");
+var tbody = document.getElementsByTagName("tbody");
 
 body[0].addEventListener("click", (e) => {
     
@@ -145,7 +140,9 @@ body[0].addEventListener("click", (e) => {
 
     //att skapa användarens alternativ dynamiskt
     if (e.target.id == "station") {
-        let stationIndex = parseInt(e.target.value);
+        let stationIndex = parseInt(e.target.selectedIndex) - 1;
+        console.log(e.target.selectedIndex);
+        console.log(stationIndex);
         attributer.innerHTML = "";
         let heading= document.getElementsByTagName("h4");
         console.log(heading);
@@ -172,71 +169,85 @@ body[0].addEventListener("click", (e) => {
 
     }
 
+    if (e.target.id == "choose") {
+        
+        tbody[0].innerHTML = "";
+        let station = document.getElementById("station").selectedIndex;
+        console.log(station);
+
+        let valdstation = document.getElementsByTagName("option")[station].value; //för att .value är nu en siffra, då funkar det inte att använda i länken nedan
+
+        console.log(valdstation);
+        
+        var ele = document.getElementsByName('alternativ');
+        for (i = 0; i < ele.length; i++) {
+          if (ele[i].checked)
+            var val = ele[i].value;
+        }
+        var x = document.getElementById("start")
+        var xv = x.value
+        
+        var y = document.getElementById("end")
+        var yv = y.value
+
+
+        
+        //console.log( "http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
+        fetch("http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
+          .then(response => {
+            return response.json();
+          })
+          .then(newRes => {
+            if (newRes.length == 0) {
+              console.log("no data")
+              alert("Ingen data finns");
+
+            } else {
+              //create a table
+              let table = document.getElementById("valfriData");
+              
+              table.classList.remove("hidden");
+        
+                console.log(valdstation);
+        
+              newRes.forEach(r => {
+                //show the dates and appropriate value;
+                let time = r.TimeStamp.replace("/Date(", "");
+                num = time.replace(")/", "");
+                let miliSec = parseInt(num);
+                let date = new Date(miliSec);
+                let day = date.getDate();
+                let month = date.getMonth();
+                let year = date.getFullYear();
+        
+                let value = r.Value;
+                  //insert info into table
+                let stationInfo= document.createElement("tr");
+                let name= document.createElement("td");
+                name.innerHTML= valdstation;
+                let datum = document.createElement("td");
+                datum.innerHTML= day + "/ " + month + "/ " + year;
+                let att= document.createElement("td");
+                att.innerHTML= `${val}`;
+                let v= document.createElement("td");
+                v.innerHTML= value;
+                
+                stationInfo.appendChild(name);
+                stationInfo.appendChild(datum);
+                stationInfo.appendChild(att);
+                stationInfo.appendChild(v);
+                tbody[0].appendChild(stationInfo);
+                
+              
+        
+                console.log(day + " " + month + " " + year + " " + `${val}` + " " + value)
+              });
+            }
+          })
+
+
+    }
+
+
 })
 
-function specificData(){
-  let station = document.getElementById("station").selectedIndex;
-  console.log(station);
-  let valdstation = document.getElementsByTagName("option")[station].innerHTML; //för att .value är nu en siffra, då funkar det inte att använda i länken nedan
-
-  var ele = document.getElementsByName('alternativ');
-  for (i = 0; i < ele.length; i++) {
-    if (ele[i].checked)
-      var val = ele[i].value;
-  }
-  var x = document.getElementById("start")
-  var xv = x.value
-
-  var y = document.getElementById("end")
-  var yv = y.value
-
-  //console.log( "http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
-  fetch("http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
-    .then(response => {
-      return response.json();
-    })
-    .then(newRes => {
-      if (newRes.length == 0) {
-        console.log("no data")
-      } else {
-        //create a table
-        let table = document.getElementById("valfriData");
-        table.classList.remove("hidden");
-
-console.log(valdstation);
-
-        newRes.forEach(r => {
-          //show the dates and appropriate value;
-          let time = r.TimeStamp.replace("/Date(", "");
-          num = time.replace(")/", "");
-          let miliSec = parseInt(num);
-          let date = new Date(miliSec);
-          let day = date.getDate();
-          let month = date.getMonth();
-          let year = date.getFullYear();
-
-          let value = r.Value;
-            //insert info into table
-          let stationInfo= document.createElement("tr");
-          let name= document.createElement("td");
-          name.innerHTML= valdstation;
-          let datum = document.createElement("td");
-          datum.innerHTML= day + "/ " + month + "/ " + year;
-          let att= document.createElement("td");
-          att.innerHTML= `${val}`;
-          let v= document.createElement("td");
-          v.innerHTML= value;
-          
-          stationInfo.appendChild(name);
-          stationInfo.appendChild(datum);
-          stationInfo.appendChild(att);
-          stationInfo.appendChild(v);
-          table.appendChild(stationInfo);
-          
-        
-
-          console.log(day + " " + month + " " + year + " " + `${val}` + " " + value)
-        });
-      }
-    })
-}

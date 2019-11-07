@@ -10,6 +10,10 @@
 </head>
 
 <body>
+  <header>
+    <h1>Mölndalsån data</h1>
+  </header>
+
   <div class="topnav">
     <section id="form">
       <h2>Få specific data från valfri mätstation</h2>
@@ -44,25 +48,30 @@
 
       </div>
     
-        <button onclick="specificData()">
+        <button id = "choose">
             Submit
         </button>
       
     </section>
   </div>
+
   <div id="table">
       <table class="hidden" id="valfriData">
-        <tr id="titles">
-          <th id="title">Station</th>
-          <th id="valfriDate">Datum</th>
-          <th id="attributeName">Attribut</th>
-          <th id="value">Värde</th>
-        </tr>
+
+        <thead>
+          <tr id="titles">
+            <th id="title">Station</th>
+            <th id="valfriDate">Datum</th>
+            <th id="attributeName">Attribut</th>
+            <th id="value">Värde</th>
+          </tr>
+        </thead>
+
+        <tbody></tbody>
+
       </table>
-    </div>
-  <header>
-    <h1>Mölndalsån data</h1>
-  </header>
+  </div>
+
   <main>
     
     <article id="molndalStations">
