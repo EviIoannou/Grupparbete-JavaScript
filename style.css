@@ -61,6 +61,18 @@ align-items: center;
   padding: 0.5em;
 }
 
+
+#valfriData th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+#valfriData{
+  margin-bottom: 1em;
+  width: 70vw;
+}
+
 #attributer > span {
   margin: 0.5em;
 }
