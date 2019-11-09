@@ -1,3 +1,4 @@
+/*whole body layout*/
 body{
   display: flex;
   flex-direction: column;
@@ -6,6 +7,7 @@ body{
   height: 100vh;
 }
 
+/*Style form where user chooses station and parameter*/
 .topnav {
   background: white;
   margin-bottom: 2em;
@@ -29,7 +31,7 @@ align-items: center;
   padding: 0.5em;
 }
 
-/*Style table*/
+/*Style table with info user wants to see*/
 .hidden {
   display: none;
 }
@@ -58,7 +60,7 @@ align-items: center;
 .table{
   margin-bottom: 1em;
 }
-
+/*----style scrollbar- !does not work for firefox!----*/
 tbody::-webkit-scrollbar {
   width: 0.5em;
 }
@@ -72,6 +74,7 @@ tbody::-webkit-scrollbar-thumb {
   background: rgb(75, 74, 74)
 }​
 
+/* Parameters styling*/
 #attributer > span {
   margin: 0.5em;
 }
@@ -85,6 +88,7 @@ header h1 {
   margin: 1em;
 }
 
+/*Style area with info about stations*/
 main {
   width: 70%;
 }
