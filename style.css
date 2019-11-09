@@ -1,3 +1,11 @@
+body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
 .topnav {
   background: white;
   margin-bottom: 2em;
@@ -9,14 +17,68 @@
 }
 section{
   border: solid 0.1em black;
- 
 }
-body{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
+
+#form{
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+#form div{
+  padding: 0.5em;
+}
+
+/*Style table*/
+.hidden {
+  display: none;
+}
+
+#valfriData th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align: center;  
+  margin-bottom: 1em;
+  width: 50vw; 
+}
+
+#valfriData{
+  width: 50vw;
+}
+
+.table #valfriData tbody{
+  display:block;
+  overflow:auto;
+  height:50vh
+}
+
+.table #valfriData thead tr{
+  display:block;
+}
+.table{
+  margin-bottom: 1em;
+}
+
+tbody::-webkit-scrollbar {
+  width: 0.5em;
+}
+tbody::-webkit-scrollbar-button {
+  background:#888
+}
+tbody::-webkit-scrollbar-track-piece {
+  background: #ccc
+}
+tbody::-webkit-scrollbar-thumb {
+  background: rgb(75, 74, 74)
+}​
+
+#attributer > span {
+  margin: 0.5em;
+}
+h4 {
+  padding: 0;
+  margin: 0;
+  font-weight: normal;
 }
 
 header h1 {
@@ -25,7 +87,6 @@ header h1 {
 
 main {
   width: 70%;
-  
 }
 article {
   display: grid;
@@ -45,43 +106,7 @@ article button{
 article div{
   padding: 0.5em;
 }
-#form{
-display: flex;
-flex-direction: column;
-align-items: center;
-}
 
-
-.hidden {
-  display: none;
-}
-
-
-#form div{
-  padding: 0.5em;
-}
-
-
-#valfriData th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-  text-align: center;
-}
-
-#valfriData{
-  margin-bottom: 1em;
-  width: 70vw;
-}
-
-#attributer > span {
-  margin: 0.5em;
-}
-
-h4 {
-  padding: 0;
-  margin: 0;
-  font-weight: normal;
-}
 
 
 /* Adjust to small screens*/
