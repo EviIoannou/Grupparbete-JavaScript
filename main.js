@@ -241,7 +241,7 @@ body[0].addEventListener("click", (e) => {
                 stationInfo.appendChild(att);
                 stationInfo.appendChild(v);
                 tbody[0].appendChild(stationInfo);
-                
+               
               
         
                 console.log(day + " " + month + " " + year + " " + `${val}` + " " + value)
