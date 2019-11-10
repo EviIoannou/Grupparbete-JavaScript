@@ -193,7 +193,8 @@ body[0].addEventListener("click", (e) => {
         var y = document.getElementById("end")
         var yv = y.value
 
-
+        let graph= document.getElementById("graph");
+        let tabell= document.getElementById("tabell");
         
         //console.log( "http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
         fetch("http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
@@ -205,7 +206,7 @@ body[0].addEventListener("click", (e) => {
               console.log("no data")
               alert("Ingen data finns");
 
-            } else {
+            } else if (tabell.checked){
               //create a table
               let table = document.getElementById("valfriData");
               
@@ -245,6 +246,13 @@ body[0].addEventListener("click", (e) => {
         
                 console.log(day + " " + month + " " + year + " " + `${val}` + " " + value)
               });
+            }
+            else if(graph.checked){
+              if(table.classList!="hidden"){
+                table.classList.add("hidden");
+                //tabellen kommer att försvinna och diagramen kommer att visas
+              }
+              //kod för att visa diagram här
             }
           })
 
