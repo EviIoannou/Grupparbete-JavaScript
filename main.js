@@ -79,8 +79,8 @@ function render () {
         let select= document.getElementById("station");
         let option= document.createElement("option");
         option.innerHTML=r.Description;
-        option.value=count;
-        option.id = r.Code;
+        option.value=r.Code;
+        option.id = count;
         count++;
         select.appendChild(option);
     });
@@ -114,6 +114,7 @@ body[0].addEventListener("click", (e) => {
     
     console.log(e);
     console.log(e.target);
+   
     console.log(e.target.parentNode);
 
   if (e.target.className == "details") {
@@ -136,120 +137,119 @@ body[0].addEventListener("click", (e) => {
           e.target.classList.add("details");
           e.target.innerHTML="Se detaljer"
     }
+
+    //att skapa användarens alternativ dynamiskt
+    if (e.target.id == "station") {
+        let stationIndex = parseInt(e.target.selectedIndex) - 1;
+        console.log(e.target.selectedIndex);
+        console.log(stationIndex);
+        attributer.innerHTML = "";
+        let heading= document.getElementsByTagName("h4");
+        console.log(heading);
+        heading[0].classList.remove("hidden"); 
+
+        if (stationIndex >= 0) {
+            res[stationIndex].MeasureParameters.forEach( parameter => {
+                let div = document.createElement("span");
+                let label = document.createElement("label");
+                let input = document.createElement("input");
+
+                label.setAttribute("for", (parameter.Code + stationIndex));
+                label.innerHTML = parameter.Description
+
+                input.type = "radio";
+                input.name = "alternativ";
+                input.value = parameter.Code;
+                input.id = parameter.Code + stationIndex;
+                input.appendChild(document.createTextNode(parameter.Description));
+            
+                
+                div.appendChild(input);
+                div.appendChild(label);
+                attributer.appendChild(div);
+            })
+        }
+
+    }
+
     if (e.target.id == "choose") {
-      
-      tbody[0].innerHTML = "";
-      let station = document.getElementById("station").selectedIndex;
-      console.log(station);
+        
+        tbody[0].innerHTML = "";
+        let station = document.getElementById("station").selectedIndex;
+        console.log(station);
 
-      let valdstation = document.getElementsByTagName("option")[station].id; 
+        let valdstation = document.getElementsByTagName("option")[station].value; //för att .value är nu en siffra, då funkar det inte att använda i länken nedan
 
-      console.log(valdstation);
-      
-      var ele = document.getElementsByName('alternativ');
-      for (i = 0; i < ele.length; i++) {
-        if (ele[i].checked)
-          var val = ele[i].value;
-      }
-      var x = document.getElementById("start")
-      var xv = x.value
-      
-      var y = document.getElementById("end")
-      var yv = y.value
+        console.log(valdstation);
+        
+        var ele = document.getElementsByName('alternativ');
+        for (i = 0; i < ele.length; i++) {
+          if (ele[i].checked)
+            var val = ele[i].value;
+        }
+        var x = document.getElementById("start")
+        var xv = x.value
+        
+        var y = document.getElementById("end")
+        var yv = y.value
 
 
-      
-      //console.log( "http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
-      fetch("http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
-        .then(response => {
-          return response.json();
-        })
-        .then(newRes => {
-          if (newRes.length == 0) {
-            console.log("no data")
-            alert("Ingen data finns");
+        
+        //console.log( "http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
+        fetch("http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
+          .then(response => {
+            return response.json();
+          })
+          .then(newRes => {
+            if (newRes.length == 0) {
+              console.log("no data")
+              alert("Ingen data finns");
 
-          } else {
-            //create a table
-            let table = document.getElementById("valfriData");
-            
-            table.classList.remove("hidden");
-      
-              console.log(valdstation);
-      
-            newRes.forEach(r => {
-              //show the dates and appropriate value;
-              let time = r.TimeStamp.replace("/Date(", "");
-              num = time.replace(")/", "");
-              let miliSec = parseInt(num);
-              let date = new Date(miliSec);
-              let day = date.getDate();
-              let month = date.getMonth();
-              let year = date.getFullYear();
-      
-              let value = r.Value;
-                //insert info into table
-              let stationInfo= document.createElement("tr");
-              let name= document.createElement("td");
-              name.innerHTML= res[station - 1].Description;
-              let datum = document.createElement("td");
-              datum.innerHTML= day + "/ " + month + "/ " + year;
-              let att= document.createElement("td");
-              att.innerHTML= `${val}`;
-              let v= document.createElement("td");
-              v.innerHTML= value;
+            } else {
+             
+          //create a table
+          let table = document.getElementById("valfriData");
+          table.classList.remove("hidden");
+                console.log(valdstation);
+        
+              newRes.forEach(r => {
+                //show the dates and appropriate value;
+                let time = r.TimeStamp.replace("/Date(", "");
+                num = time.replace(")/", "");
+                let miliSec = parseInt(num);
+                let date = new Date(miliSec);
+                let day = date.getDate();
+                let month = date.getMonth();
+                let year = date.getFullYear();
+        
+                let value = r.Value;
+                  //insert info into table
+                let stationInfo= document.createElement("tr");
+                let name= document.createElement("td");
+                name.innerHTML= res[station - 1].Description;
+                let datum = document.createElement("td");
+                datum.innerHTML= day + "/ " + month + "/ " + year;
+                let att= document.createElement("td");
+                att.innerHTML= `${val}`;
+                let v= document.createElement("td");
+                v.innerHTML= value;
+                
+                stationInfo.appendChild(name);
+                stationInfo.appendChild(datum);
+                stationInfo.appendChild(att);
+                stationInfo.appendChild(v);
+                tbody[0].appendChild(stationInfo);
+               
               
-              stationInfo.appendChild(name);
-              stationInfo.appendChild(datum);
-              stationInfo.appendChild(att);
-              stationInfo.appendChild(v);
-              tbody[0].appendChild(stationInfo);
-              
-            
-      
-              console.log(day + " " + month + " " + year + " " + `${val}` + " " + value)
-            });
-          }
-        })
-  }
+        
+                console.log(day + " " + month + " " + year + " " + `${val}` + " " + value)
+              });
+            }
+          })
+
+
+    }
+
 
 })
-    //att skapa användarens alternativ dynamiskt
-        
-    station.addEventListener('change', (e) => {
-      let stationIndex= `${e.target.value}`;
-      console.log("You clicked" + " " + stationIndex ) ;
-      attributer.innerHTML = "";
-      let heading= document.getElementsByTagName("h4");
-      console.log(heading);
-      heading[0].classList.remove("hidden"); 
-
-      if (`${e.target.value}`!="default") {
-          res[stationIndex].MeasureParameters.forEach( parameter => {
-              let div = document.createElement("span");
-              let label = document.createElement("label");
-              let input = document.createElement("input");
-
-              label.setAttribute("for", (parameter.Code + stationIndex));
-              label.innerHTML = parameter.Description
-
-              input.type = "radio";
-              input.name = "alternativ";
-              input.value = parameter.Code;
-              input.id = parameter.Code + stationIndex;
-              input.appendChild(document.createTextNode(parameter.Description));
-          
-              
-              div.appendChild(input);
-              div.appendChild(label);
-              attributer.appendChild(div);
-          })
-      }
-    });
- 
-     
-
-    
-
-    
 
