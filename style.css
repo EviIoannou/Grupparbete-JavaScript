@@ -218,6 +218,9 @@ article div{
 }
 
 @media screen and (max-width: 425px){
+  #dates label, input{
+    display: block;
+  }
   article {/*----grid for mobile----*/
     display: grid;
     grid-template-columns: auto auto auto ;
