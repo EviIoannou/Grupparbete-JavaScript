@@ -265,8 +265,9 @@ body[0].addEventListener("click", (e) => {
 
               lineGraph.classList.remove("hidden");
               
-              /** start creating the graph */
+              /** start creating the graph using canvasjs.min.js */
 
+              //skapa en array med datum och parameter variabler i lämpligt format
               let data = [];
 
               newRes.forEach( result => {
@@ -278,6 +279,7 @@ body[0].addEventListener("click", (e) => {
                 data.push(thisDataPoint);
               })
 
+              //skapa diagram
               var chart = new CanvasJS.Chart("lineGraph", {
                 animationEnabled: true,
                 theme: "light2",
@@ -285,7 +287,6 @@ body[0].addEventListener("click", (e) => {
                   text: res[station - 1].Description + " - " + val
                 },
                 axisX:{
-                  //title: "Datum",
                   valueFormatString: "MMM YY",  //can I change this to SV format
                   crosshair: {
                     enabled: true,
@@ -293,7 +294,8 @@ body[0].addEventListener("click", (e) => {
                   }
                 },
                 axisY: {
-                  title: val,
+                  //\u00B2 = uni-code of superscript 2
+                  title: val + " (m\u00B2/s)",  
                   crosshair: {
                     enabled: true
                   }
@@ -312,7 +314,6 @@ body[0].addEventListener("click", (e) => {
                   type: "line",
                   name: val,
                   xValueFormatString: "DD MMM YYYY",
-                  //xValueFormatString: "MM-DD-YYYY",
                   color: "#3BD8D9",
                   dataPoints: data  
                 }]
@@ -327,8 +328,6 @@ body[0].addEventListener("click", (e) => {
                 }
                 chart.render();
               }
-              
-
             }
           })
 
