@@ -229,6 +229,7 @@ body[0].addEventListener("click", (e) => {
       for (i = 0; i < ele.length; i++) {
         if (ele[i].checked)
           var val = ele[i].value;
+          var sv= ele[i].childNodes[0].data;
       }
       var x = document.getElementById("start")
       var xv = x.value
@@ -283,6 +284,7 @@ body[0].addEventListener("click", (e) => {
                 datum.innerHTML= day + "/ " + month + "/ " + year;
                 let att= document.createElement("td");
                 att.innerHTML= `${parameterSV}`;
+
                 let v= document.createElement("td");
                 v.innerHTML= value;
                 
