@@ -60,6 +60,20 @@ align-items: center;
 .table{
   margin-bottom: 1em;
 }
+
+#lineGraph.hidden {
+  display: none;
+}
+
+#lineGraph {
+  width: 50vw;
+  height: 50vh;
+  display: block;
+  margin: 0 1em 2em 1em;
+  box-shadow: 5px 5px 5px rgba(153, 147, 150, 0.705);
+}
+
+
 /*----style scrollbar- !does not work for firefox!----*/
 tbody::-webkit-scrollbar {
   width: 0.5em;
