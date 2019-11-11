@@ -298,6 +298,7 @@ body[0].addEventListener("click", (e) => {
                 },
                 axisX:{
                   valueFormatString: "MMM YY",  //can I change this to SV format
+                  labelFontColor: "black",
                   crosshair: {
                     enabled: true,
                     snapToDataPoint: true
@@ -306,6 +307,8 @@ body[0].addEventListener("click", (e) => {
                 axisY: {
                   //\u00B2 = uni-code of superscript 2
                   title: parameterSV + " (m\u00B2/s)",  
+                  titleFontColor: "black",
+                  labelFontColor: "black",
                   crosshair: {
                     enabled: true
                   }
@@ -322,7 +325,7 @@ body[0].addEventListener("click", (e) => {
                 },
                 data: [{
                   type: "line",
-                  name: parameterSV,
+                  name: parameterSV + " (m\u00B2/s)",
                   xValueFormatString: "DD MMM YYYY",
                   color: "#3BD8D9",
                   dataPoints: data  
