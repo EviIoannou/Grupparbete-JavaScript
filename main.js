@@ -5,6 +5,15 @@ var dateToday = (new Date()).toISOString();
 var startDate = document.getElementById("start");
 var endDate = document.getElementById("end");
 
+var station = document.getElementById("station");
+var attributer = document.getElementById("attributer");
+var h4 = document.getElementsByTagName("p");
+
+var choose = document.getElementById("choose");
+var tbody = document.getElementsByTagName("tbody");
+var table = document.getElementById("valfriData");  // Jag har flyttat "table" upp så att den är global och funkar överallt
+var lineGraph = document.getElementById("lineGraph");
+
 fetch("http://data.goteborg.se/RiverService/v1.1/MeasureSites/66473147-1c20-40c1-b1f9-6d18f1e620bf?format=json")
   .then(response => {
     return response.json();
@@ -88,11 +97,6 @@ function render () {
 }
 
 
-var station = document.getElementById("station");
-var attributer = document.getElementById("attributer");
-var h4 = document.getElementsByTagName("p");
-
-
 function defaultDates() {
   let t = dateToday.indexOf("T");
   let defaultToday = dateToday.slice(0, t);
@@ -107,8 +111,7 @@ function defaultDates() {
 
 defaultDates();
 
-var choose = document.getElementById("choose");
-var tbody = document.getElementsByTagName("tbody");
+var parameterSV = "";
 
 body[0].addEventListener("click", (e) => {
     
@@ -116,6 +119,13 @@ body[0].addEventListener("click", (e) => {
     console.log(e.target);
    
     console.log(e.target.parentNode);
+
+    //hämta svensk attributnamn
+    if ((e.target.nodeName == "INPUT") && (e.target.name == "alternativ")) {
+      parameterSV = e.target.childNodes[0].nodeValue;
+      console.log("The attribut name: ");
+      console.log(parameterSV);
+    }
 
   if (e.target.className == "details") {
     let index = e.target.parentNode;
@@ -172,6 +182,7 @@ body[0].addEventListener("click", (e) => {
 
     }
 
+
     station.addEventListener('change', (e) => {
       let stationIndex= `${e.target.value}`;
       console.log("You clicked" + " " + stationIndex ) ;
@@ -203,6 +214,7 @@ body[0].addEventListener("click", (e) => {
       }
     });
 
+
     if (e.target.id == "choose") {
         
       tbody[0].innerHTML = "";
@@ -227,6 +239,7 @@ body[0].addEventListener("click", (e) => {
 
         let graph= document.getElementById("graph");
         let tabell= document.getElementById("tabell");
+
         
         //console.log( "http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
         fetch("http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
@@ -239,8 +252,14 @@ body[0].addEventListener("click", (e) => {
               alert("Ingen data finns");
 
             } else if (tabell.checked){
+                //göm diagram
+                if(lineGraph.classList!="hidden"){
+                  lineGraph.classList.add("hidden");
+                }
+
               //create a table
-              let table = document.getElementById("valfriData");
+
+              //let table = document.getElementById("valfriData");
               
               table.classList.remove("hidden");
         
@@ -264,7 +283,8 @@ body[0].addEventListener("click", (e) => {
                 let datum = document.createElement("td");
                 datum.innerHTML= day + "/ " + month + "/ " + year;
                 let att= document.createElement("td");
-                att.innerHTML= `${sv}`;
+                att.innerHTML= `${parameterSV}`;
+
                 let v= document.createElement("td");
                 v.innerHTML= value;
                 
@@ -285,6 +305,76 @@ body[0].addEventListener("click", (e) => {
                 //tabellen kommer att försvinna och diagramen kommer att visas
               }
               //kod för att visa diagram här
+              console.log(newRes);
+
+              lineGraph.classList.remove("hidden");
+              
+              /** start creating the graph using canvasjs.min.js */
+
+              //skapa en array med datum och parameter variabler i lämpligt format
+              let data = [];
+
+              newRes.forEach( result => {
+                let time = result.TimeStamp;
+                let unixTime = time.slice((time.indexOf("(")+1), (time.indexOf(")")));
+                let regular = new Date(parseInt(unixTime));
+
+                let thisDataPoint = { x: regular, y: result.Value };
+                data.push(thisDataPoint);
+              })
+
+              //skapa diagram
+              var chart = new CanvasJS.Chart("lineGraph", {
+                animationEnabled: true,
+                theme: "light2",
+                title:{
+                  text: res[station - 1].Description + " - " + parameterSV
+                },
+                axisX:{
+                  valueFormatString: "MMM YY",  //can I change this to SV format
+                  labelFontColor: "black",
+                  crosshair: {
+                    enabled: true,
+                    snapToDataPoint: true
+                  }
+                },
+                axisY: {
+                  //\u00B2 = uni-code of superscript 2
+                  title: parameterSV + " (m\u00B2/s)",  
+                  titleFontColor: "black",
+                  labelFontColor: "black",
+                  crosshair: {
+                    enabled: true
+                  }
+                },
+                toolTip:{
+                  shared:true
+                },  
+                legend:{
+                  cursor:"pointer",
+                  verticalAlign: "bottom",
+                  horizontalAlign: "left",
+                  dockInsidePlotArea: true,
+                  itemclick: toogleDataSeries
+                },
+                data: [{
+                  type: "line",
+                  name: parameterSV + " (m\u00B2/s)",
+                  xValueFormatString: "DD MMM YYYY",
+                  color: "#3BD8D9",
+                  dataPoints: data  
+                }]
+              });
+              chart.render();
+              
+              function toogleDataSeries(e){
+                if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                  e.dataSeries.visible = false;
+                } else{
+                  e.dataSeries.visible = true;
+                }
+                chart.render();
+              }
             }
           })
 
