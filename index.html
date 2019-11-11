@@ -31,12 +31,12 @@
         </select>
       </div>
 
-      
-      
-      <h4 class="hidden">Välj en parameter</h4> 
-      <div id="attributer">
 
-        <!-- <input type="radio" name="alternativ" value="Flow">Flöden
+      <div id="choice">
+        <h4 class="hidden">Välj en parameter:</h4>
+        <div id="attributer">
+
+          <!-- <input type="radio" name="alternativ" value="Flow">Flöden
         <input type="radio" name="alternativ" value="Rainfall">Nederbörd
         <input type="radio" name="alternativ" value="Tapping">Tappning
         <input type="radio" name="alternativ" value="level">Nivå
@@ -44,20 +44,22 @@
         <br>
         <button type="button" onclick="specificData()">
           Submit
-        </button> -->       
+        </button> -->
+
+        </div>
+      </div>
+      <div id="display">
+        <h4>Välj display:</h4>
+        <input type="radio" name="display" id="graph" value="graph">
+        <label for="graph">Diagram</label>
+        <input type="radio" name="display" id="tabell" value="tabell">
+        <label for="tabell">Tabell</label>
 
       </div>
-    <div id="display"> <!--kanske bättre att ha klass="hidden" som försvinner när man väljer en station-->
-      <div><h4>Välj "display" <!--var inte säker vad är det bästa svenska ord här--></h4></div>
-      <label for="graph">Visa diagram</label>
-      <input type="radio" name="display" id="graph" value="graph">
-      <label for="tabell">Visa tabell</label>
-      <input type="radio" name="display" id="tabell" value="tabell">
-    </div>
-        <button id = "choose">
-            Submit
-        </button>
-      
+      <button id="choose">
+        Submit
+      </button>
+
     </section>
   </div>
 
@@ -79,15 +81,16 @@
       
       <div id="lineGraph" class="hidden">
       </div>
+
   </div>
 
 
   <main>
-    <h2>Allt data</h2>
     <article id="molndalStations">
     </article>
   </main>
 </body>
 <script src="main.js"></script>
 <script src="canvasjs.min.js"></script>
+
 </html>
