@@ -31,6 +31,13 @@ align-items: center;
   padding: 0.5em;
 }
 
+#display h4, #attributer, label, input{
+  display: inline;
+}
+
+#choice h4, label, input{
+  display: inline;
+}
 /*Style table with info user wants to see*/
 .hidden {
   display: none;
@@ -144,6 +151,10 @@ article {/*grid for mobile*/
   grid-template-columns: auto auto auto ;
   grid-template-rows: auto auto auto auto auto;
   grid-gap: 1em;
+}
+
+#display label, input{
+  display: block;
 }
 
 /* padding and margin*/
