@@ -111,6 +111,7 @@ function defaultDates() {
 
 defaultDates();
 
+var parameterSV = "";
 
 body[0].addEventListener("click", (e) => {
     
@@ -118,6 +119,13 @@ body[0].addEventListener("click", (e) => {
     console.log(e.target);
    
     console.log(e.target.parentNode);
+
+    //hämta svensk attributnamn
+    if ((e.target.nodeName == "INPUT") && (e.target.name == "alternativ")) {
+      parameterSV = e.target.childNodes[0].nodeValue;
+      console.log("The attribut name: ");
+      console.log(parameterSV);
+    }
 
   if (e.target.className == "details") {
     let index = e.target.parentNode;
@@ -174,6 +182,7 @@ body[0].addEventListener("click", (e) => {
 
     }
 
+
     if (e.target.id == "choose") {
         
         tbody[0].innerHTML = "";
@@ -197,6 +206,7 @@ body[0].addEventListener("click", (e) => {
 
         let graph= document.getElementById("graph");
         let tabell= document.getElementById("tabell");
+
         
         //console.log( "http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
         fetch("http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
@@ -240,7 +250,7 @@ body[0].addEventListener("click", (e) => {
                 let datum = document.createElement("td");
                 datum.innerHTML= day + "/ " + month + "/ " + year;
                 let att= document.createElement("td");
-                att.innerHTML= `${val}`;
+                att.innerHTML= `${parameterSV}`;
                 let v= document.createElement("td");
                 v.innerHTML= value;
                 
@@ -284,7 +294,7 @@ body[0].addEventListener("click", (e) => {
                 animationEnabled: true,
                 theme: "light2",
                 title:{
-                  text: res[station - 1].Description + " - " + val
+                  text: res[station - 1].Description + " - " + parameterSV
                 },
                 axisX:{
                   valueFormatString: "MMM YY",  //can I change this to SV format
@@ -295,7 +305,7 @@ body[0].addEventListener("click", (e) => {
                 },
                 axisY: {
                   //\u00B2 = uni-code of superscript 2
-                  title: val + " (m\u00B2/s)",  
+                  title: parameterSV + " (m\u00B2/s)",  
                   crosshair: {
                     enabled: true
                   }
@@ -312,7 +322,7 @@ body[0].addEventListener("click", (e) => {
                 },
                 data: [{
                   type: "line",
-                  name: val,
+                  name: parameterSV,
                   xValueFormatString: "DD MMM YYYY",
                   color: "#3BD8D9",
                   dataPoints: data  
