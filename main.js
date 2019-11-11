@@ -35,7 +35,7 @@ function render () {
         
         station.MeasureParameters.forEach(parameter => {
             if (parameter.Code == "Tapping") {
-                tapping = "Flöde: " + parameter.CurrentValue + "m<sup>2</sup>/s"
+                tapping = "Flöde: " + parameter.CurrentValue + "m<sup>3</sup>/s"
             }
             
         });
@@ -340,7 +340,7 @@ body[0].addEventListener("click", (e) => {
                 },
                 axisY: {
                   //\u00B2 = uni-code of superscript 2
-                  title: parameterSV + " (m\u00B2/s)",  
+                  title: parameterSV + " (m\u00B3/s)",  
                   titleFontColor: "black",
                   labelFontColor: "black",
                   crosshair: {
@@ -359,7 +359,7 @@ body[0].addEventListener("click", (e) => {
                 },
                 data: [{
                   type: "line",
-                  name: parameterSV + " (m\u00B2/s)",
+                  name: parameterSV + " (m\u00B3/s)",
                   xValueFormatString: "DD MMM YYYY",
                   color: "#3BD8D9",
                   dataPoints: data  
