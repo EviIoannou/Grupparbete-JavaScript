@@ -88,8 +88,8 @@ function render () {
         let select= document.getElementById("station");
         let option= document.createElement("option");
         option.innerHTML=r.Description;
-        option.value=r.Code;
-        option.id = count;
+        option.value=count;
+        option.id = r.Code;
         count++;
         select.appendChild(option);
     });
@@ -183,26 +183,58 @@ body[0].addEventListener("click", (e) => {
     }
 
 
+    station.addEventListener('change', (e) => {
+      let stationIndex= `${e.target.value}`;
+      console.log("You clicked" + " " + stationIndex ) ;
+      attributer.innerHTML = "";
+      let heading= document.getElementsByTagName("h4");
+      console.log(heading);
+      heading[0].classList.remove("hidden"); 
+
+      if (`${e.target.value}`!="default") {
+          res[stationIndex].MeasureParameters.forEach( parameter => {
+              let div = document.createElement("span");
+              let label = document.createElement("label");
+              let input = document.createElement("input");
+
+              label.setAttribute("for", (parameter.Code + stationIndex));
+              label.innerHTML = parameter.Description
+
+              input.type = "radio";
+              input.name = "alternativ";
+              input.value = parameter.Code;
+              input.id = parameter.Code + stationIndex;
+              input.appendChild(document.createTextNode(parameter.Description));
+
+
+              div.appendChild(input);
+              div.appendChild(label);
+              attributer.appendChild(div);
+          })
+      }
+    });
+
+
     if (e.target.id == "choose") {
         
-        tbody[0].innerHTML = "";
-        let station = document.getElementById("station").selectedIndex;
-        console.log(station);
+      tbody[0].innerHTML = "";
+      let station = document.getElementById("station").selectedIndex;
+      console.log(station);
 
-        let valdstation = document.getElementsByTagName("option")[station].value; //för att .value är nu en siffra, då funkar det inte att använda i länken nedan
+      let valdstation = document.getElementsByTagName("option")[station].id; 
 
-        console.log(valdstation);
-        
-        var ele = document.getElementsByName('alternativ');
-        for (i = 0; i < ele.length; i++) {
-          if (ele[i].checked)
-            var val = ele[i].value;
-        }
-        var x = document.getElementById("start")
-        var xv = x.value
-        
-        var y = document.getElementById("end")
-        var yv = y.value
+      console.log(valdstation);
+
+      var ele = document.getElementsByName('alternativ');
+      for (i = 0; i < ele.length; i++) {
+        if (ele[i].checked)
+          var val = ele[i].value;
+      }
+      var x = document.getElementById("start")
+      var xv = x.value
+
+      var y = document.getElementById("end")
+      var yv = y.value
 
         let graph= document.getElementById("graph");
         let tabell= document.getElementById("tabell");
