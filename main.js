@@ -13,6 +13,7 @@ var choose = document.getElementById("choose");
 var tbody = document.getElementsByTagName("tbody");
 var table = document.getElementById("valfriData"); // Jag har flyttat "table" upp så att den är global och funkar överallt
 var lineGraph = document.getElementById("lineGraph");
+var choice = document.getElementById("choice");
 
 fetch("http://data.goteborg.se/RiverService/v1.1/MeasureSites/66473147-1c20-40c1-b1f9-6d18f1e620bf?format=json")
   .then(response => {
@@ -156,7 +157,8 @@ body[0].addEventListener("click", (e) => {
     attributer.innerHTML = "";
     let heading = document.getElementsByTagName("h4");
     console.log(heading);
-    heading[0].classList.remove("hidden");
+    // heading[0].classList.remove("hidden");
+    choice.classList.remove("hidden"); 
 
     if (stationIndex >= 0) {
       res[stationIndex].MeasureParameters.forEach(parameter => {
@@ -189,7 +191,8 @@ body[0].addEventListener("click", (e) => {
     attributer.innerHTML = "";
     let heading = document.getElementsByTagName("h4");
     console.log(heading);
-    heading[0].classList.remove("hidden");
+    // heading[0].classList.remove("hidden");
+    choice.classList.remove("hidden"); 
 
     if (`${e.target.value}` != "default") {
       res[stationIndex].MeasureParameters.forEach(parameter => {
