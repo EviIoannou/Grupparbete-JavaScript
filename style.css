@@ -204,7 +204,6 @@ article div{
 }
 .topnav{
   margin-bottom: 1em;
-  width: 70vw;
 }
 
 #station{
@@ -229,7 +228,7 @@ article div{
     grid-template-rows: auto auto auto auto auto;
     grid-gap: 1em;
   }
-  #lineGraph{
+  .topnav, #valfriData, #lineGraph{
     width: 70vw;
   }
 
