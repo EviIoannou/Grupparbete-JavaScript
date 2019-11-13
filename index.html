@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>test</title>
+  <title>Mölndalsån data</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 </head>
@@ -20,9 +20,9 @@
       <h2>Få specific data från valfri mätstation</h2>
       <!-- user input form -->
       <div id="dates">
-        <label for="start">From:</label>
+        <label for="start">Välj datum fr.o.m.</label>
         <input type="date" id="start" name="startDate" min="1990-01-01" max="2019-11-14">
-        <label for="start">To:</label>
+        <label for="start">t.o.m.</label>
         <input type="date" id="end" name="endDate" min="1990-01-01" max="2019-11-14">
       </div>
       <div id="stationer">
@@ -34,7 +34,9 @@
 
 
       <div id="choice" class="hidden">
-        <h4 >Välj en parameter:</h4>
+
+        <h4>Välj en parameter:</h4>
+
         <div id="attributer">
         </div>
       </div>
@@ -46,6 +48,7 @@
         <label for="tabell">Tabell</label>
 
       </div>
+      <div id = "error-message" class="hidden"></div>
       <button id="choose">
         Submit
       </button>

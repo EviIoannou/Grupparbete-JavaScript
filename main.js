@@ -16,7 +16,11 @@ var choose = document.getElementById("choose");
 var tbody = document.getElementsByTagName("tbody");
 var table = document.getElementById("valfriData"); // Jag har flyttat "table" upp så att den är global och funkar överallt
 var lineGraph = document.getElementById("lineGraph");
+
+var errorMessage = document.getElementById("error-message");
+
 var showAll = document.getElementById("showAll");
+
 
 fetch("http://data.goteborg.se/RiverService/v1.1/MeasureSites/66473147-1c20-40c1-b1f9-6d18f1e620bf?format=json")
   .then(response => {
@@ -113,7 +117,7 @@ function defaultDates() {
   startDate.value = defaultStart;
 }
 
-defaultDates();
+//defaultDates();
 
 var parameterSV = "";
 
@@ -153,11 +157,14 @@ body[0].addEventListener("click", (e) => {
   }
 
   //att skapa användarens alternativ dynamiskt
+
   let noStation;
+
   station.addEventListener('change', (e) => {
     let stationIndex = `${e.target.value}`;
     console.log("You clicked" + " " + stationIndex);
     attributer.innerHTML = "";
+
 
     if (stationIndex != "default") {
 
@@ -202,6 +209,9 @@ body[0].addEventListener("click", (e) => {
 
   if (e.target.id == "choose") {
 
+    errorMessage.innerHTML = "";
+    errorMessage.classList.add("hidden"); 
+
     tbody[0].innerHTML = "";
     let station = document.getElementById("station").selectedIndex;
     console.log(station);
@@ -232,17 +242,45 @@ body[0].addEventListener("click", (e) => {
     let valdstation = document.getElementsByTagName("option")[station].id;
     console.log(valdstation);
 
+    var val = "";
+    console.log(val);
+    
     var ele = document.getElementsByName('alternativ');
     for (i = 0; i < ele.length; i++) {
       if (ele[i].checked)
-        var val = ele[i].value;
+        val = ele[i].value;
       var sv = ele[i].childNodes[0].data;
     }
+    console.log(val);
+    
     var x = document.getElementById("start")
     var xv = x.value
 
     var y = document.getElementById("end")
     var yv = y.value
+
+    /** datum felhantering */
+
+    var startUnix = Date.parse(xv);
+    var endUnix= Date.parse(yv);
+    var todayUnix = Date.parse(new Date());
+
+    try {
+      if ( (yv == "") && (xv == "")) {
+        defaultDates();
+        throw "Antingen behöver du välja start och slutdatum eller använda vår default datum";
+      }
+      if (xv == "") throw "Du behöver välja startdatum";
+      if (yv == "") throw "Du behöver välja slutdatum";
+      if (startUnix > todayUnix) throw "Ange ett giltigt startdatum";
+      if (startUnix > endUnix) throw "Startdatum är större än slutdatum";
+      if (val == "") throw "Välj en parameter";
+    }
+    catch(err) {
+        errorMessage.classList.remove("hidden"); 
+        errorMessage.innerHTML = "*" + err;
+    }
+  
 
     let graph = document.getElementById("graph");
     let tabell = document.getElementById("tabell");
@@ -252,11 +290,30 @@ body[0].addEventListener("click", (e) => {
         return response.json();
       })
       .then(newRes => {
-        if (newRes.length == 0) {
-          console.log("no data")
-          alert("Ingen data finns");
 
-        } else if (tabell.checked) {
+        /** felhantering */
+
+  
+        let startYear = parseInt(startDate.value.slice(0,4));
+        let startMonth = parseInt(startDate.value.slice(4,7));
+        let startDay = parseInt(startDate.value.slice(8));
+
+        let endYear = parseInt(endDate.value.slice(0,4));
+        let endMonth = parseInt(endDate.value.slice(4,7));
+        let endDay = parseInt(endDate.value.slice(8));
+        
+        //if ()
+
+
+        if (newRes.length == 0) {
+          if ( (startUnix < todayUnix) && (startUnix < endUnix) ) {
+            errorMessage.classList.remove("hidden"); 
+            errorMessage.innerHTML = "Ingen data finns för valda datum";
+          }
+
+        } 
+        
+        if (tabell.checked) {
 
           //göm diagram
           if (lineGraph.classList != "hidden") {
@@ -298,11 +355,9 @@ body[0].addEventListener("click", (e) => {
             stationInfo.appendChild(v);
             tbody[0].appendChild(stationInfo);
 
-
-
             console.log(day + " " + month + " " + year + " " + `${val}` + " " + value)
           });
-        } else if (graph.checked) {
+          } else if (graph.checked) {
 
           if (table.classList != "hidden") {
             table.classList.add("hidden");
@@ -316,6 +371,7 @@ body[0].addEventListener("click", (e) => {
           //göm divar med alla information och visa knapp för att kunna se dem igen
           main.classList.add("hidden");
           showAll.classList.remove("hidden");
+
 
           /** start creating the graph using canvasjs.min.js */
 
@@ -375,24 +431,30 @@ body[0].addEventListener("click", (e) => {
               color: "#3BD8D9",
               dataPoints: data
             }]
-          });
-          chart.render();
-
-          function toogleDataSeries(e) {
-            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-              e.dataSeries.visible = false;
-            } else {
-              e.dataSeries.visible = true;
-            }
+            });
             chart.render();
-          }
-        }
-      })
 
+            function toogleDataSeries(e) {
+              if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+              } else {
+                e.dataSeries.visible = true;
+              }
+              chart.render();
+            }
+          } else {
+            errorMessage.classList.remove("hidden"); 
+            errorMessage.innerHTML = "*Välj display";
+          }
+      })
+      
+      
   }
+
 
   if (e.target.id == "showAll") {
     if (main.classList == "hidden") {
+
       main.classList.remove("hidden");
       e.target.innerHTML = "Göm allt data"
     } else {
