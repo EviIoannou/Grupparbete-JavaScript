@@ -4,22 +4,19 @@ var body = document.getElementsByTagName("body");
 var dateToday = (new Date()).toISOString();
 var startDate = document.getElementById("start");
 var endDate = document.getElementById("end");
-
 var stations = document.getElementById("stationer");
 var station = document.getElementById("station");
 var choice = document.getElementById("choice");
 var attributer = document.getElementById("attributer");
 var display = document.getElementById("display");
 var h4 = document.getElementsByTagName("h4");
-
 var choose = document.getElementById("choose");
 var tbody = document.getElementsByTagName("tbody");
-var table = document.getElementById("valfriData"); // Jag har flyttat "table" upp så att den är global och funkar överallt
+var table = document.getElementById("valfriData"); 
 var lineGraph = document.getElementById("lineGraph");
-
 var errorMessage = document.getElementById("error-message");
-
 var showAll = document.getElementById("showAll");
+var parameterSV = "";
 
 
 fetch("http://data.goteborg.se/RiverService/v1.1/MeasureSites/66473147-1c20-40c1-b1f9-6d18f1e620bf?format=json")
@@ -43,9 +40,8 @@ function render() {
 
     station.MeasureParameters.forEach(parameter => {
       if (parameter.Code == "Tapping") {
-        tapping = "Flöde: " + parameter.CurrentValue + "m<sup>3</sup>/s"
+        tapping = "Flöde: " + parameter.CurrentValue + "m<sup>3</sup>/s";
       }
-
     });
 
     console.log(tapping);
@@ -81,7 +77,6 @@ function render() {
       }
     });
 
-
     let button = document.createElement("button");
     button.innerHTML = "Se detajler";
     button.classList.add("details");
@@ -101,9 +96,10 @@ function render() {
     count++;
     select.appendChild(option);
   });
-
 }
 
+
+/** defaultDates() skapar default datum i formuläret varav slutdatum är idags datum och startdatum är datumet för ett år sedan */
 
 function defaultDates() {
   let t = dateToday.indexOf("T");
@@ -117,22 +113,16 @@ function defaultDates() {
   startDate.value = defaultStart;
 }
 
-//defaultDates();
-
-var parameterSV = "";
-
 body[0].addEventListener("click", (e) => {
 
+  // de tre console.log() nedanför hjälper man hänga med olika events som händer
   console.log(e);
   console.log(e.target);
-
   console.log(e.target.parentNode);
 
   //hämta svensk attributnamn
   if ((e.target.nodeName == "INPUT") && (e.target.name == "alternativ")) {
     parameterSV = e.target.childNodes[0].nodeValue;
-    console.log("The attribut name: ");
-    console.log(parameterSV);
   }
 
   if (e.target.className == "details") {
@@ -165,7 +155,6 @@ body[0].addEventListener("click", (e) => {
     console.log("You clicked" + " " + stationIndex);
     attributer.innerHTML = "";
 
-
     if (stationIndex != "default") {
 
       res[stationIndex].MeasureParameters.forEach(parameter => {
@@ -182,11 +171,11 @@ body[0].addEventListener("click", (e) => {
         input.id = parameter.Code + stationIndex;
         input.appendChild(document.createTextNode(parameter.Description));
 
-
         div.appendChild(input);
         div.appendChild(label);
         attributer.appendChild(div);
       })
+
       //ta bort klass "hidden" för att visa på skärmen val för parameter och display
       choice.classList.remove("hidden");
       display.classList.remove("hidden")
@@ -194,9 +183,7 @@ body[0].addEventListener("click", (e) => {
       if (noStation.innerHTML != "undefined") {
         stations.removeChild(noStation)
       }
-
     } else {
-
       if (display.classList != "hidden") {
         display.classList.add("hidden")
       }
@@ -238,12 +225,9 @@ body[0].addEventListener("click", (e) => {
         showAll.classList.add("hidden");
       }
     }
-    //fortsätta med att hämta data när man väljer giötig station
+    //fortsätta med att hämta data när man väljer giltig station
+    let val = "";
     let valdstation = document.getElementsByTagName("option")[station].id;
-    console.log(valdstation);
-
-    var val = "";
-    console.log(val);
     
     var ele = document.getElementsByName('alternativ');
     for (i = 0; i < ele.length; i++) {
@@ -251,7 +235,6 @@ body[0].addEventListener("click", (e) => {
         val = ele[i].value;
       var sv = ele[i].childNodes[0].data;
     }
-    console.log(val);
     
     var x = document.getElementById("start")
     var xv = x.value
@@ -259,7 +242,8 @@ body[0].addEventListener("click", (e) => {
     var y = document.getElementById("end")
     var yv = y.value
 
-    /** datum felhantering */
+
+    /** felhantering */
 
     var startUnix = Date.parse(xv);
     var endUnix= Date.parse(yv);
@@ -267,18 +251,21 @@ body[0].addEventListener("click", (e) => {
 
     try {
       if ( (yv == "") && (xv == "")) {
-        defaultDates();
+        defaultDates(); 
         throw "Antingen behöver du välja start och slutdatum eller använda vår default datum";
       }
       if (xv == "") throw "Du behöver välja startdatum";
       if (yv == "") throw "Du behöver välja slutdatum";
       if (startUnix > todayUnix) throw "Ange ett giltigt startdatum";
       if (startUnix > endUnix) throw "Startdatum är större än slutdatum";
+      if (station == 0) throw "Välj station";
       if (val == "") throw "Välj en parameter";
+      //if ( (!tabell.checked) && (!graph.checked)) throw "sth strh sth";
     }
     catch(err) {
         errorMessage.classList.remove("hidden"); 
         errorMessage.innerHTML = "*" + err;
+        console.log(err);
     }
   
 
@@ -291,26 +278,12 @@ body[0].addEventListener("click", (e) => {
       })
       .then(newRes => {
 
-        /** felhantering */
-
-  
-        let startYear = parseInt(startDate.value.slice(0,4));
-        let startMonth = parseInt(startDate.value.slice(4,7));
-        let startDay = parseInt(startDate.value.slice(8));
-
-        let endYear = parseInt(endDate.value.slice(0,4));
-        let endMonth = parseInt(endDate.value.slice(4,7));
-        let endDay = parseInt(endDate.value.slice(8));
-        
-        //if ()
-
-
         if (newRes.length == 0) {
-          if ( (startUnix < todayUnix) && (startUnix < endUnix) ) {
+          if ( (startUnix < todayUnix) && (startUnix < endUnix) &&
+            (station > 0)) {
             errorMessage.classList.remove("hidden"); 
             errorMessage.innerHTML = "Ingen data finns för valda datum";
           }
-
         } 
         
         if (tabell.checked) {
@@ -363,9 +336,7 @@ body[0].addEventListener("click", (e) => {
             table.classList.add("hidden");
             //tabellen kommer att försvinna och diagramen kommer att visas
           }
-
           console.log(newRes);
-
           lineGraph.classList.remove("hidden");
 
           //göm divar med alla information och visa knapp för att kunna se dem igen
@@ -398,7 +369,7 @@ body[0].addEventListener("click", (e) => {
               text: res[station - 1].Description + " - " + parameterSV
             },
             axisX: {
-              valueFormatString: "MMM YY", //can I change this to SV format
+              valueFormatString: "MMM YY",
               labelFontColor: "black",
               crosshair: {
                 enabled: true,
@@ -443,18 +414,17 @@ body[0].addEventListener("click", (e) => {
               chart.render();
             }
           } else {
-            errorMessage.classList.remove("hidden"); 
-            errorMessage.innerHTML = "*Välj display";
+            if (station > 0) {
+              errorMessage.classList.remove("hidden"); 
+              errorMessage.innerHTML = "*Välj display";
+            }
           }
       })
-      
-      
   }
 
-
+  //ger använderen möjlighet att se den gamla informationen som låg på sidan samtidigt med en diagram eller tabell
   if (e.target.id == "showAll") {
     if (main.classList == "hidden") {
-
       main.classList.remove("hidden");
       e.target.innerHTML = "Göm allt data"
     } else {
@@ -462,5 +432,4 @@ body[0].addEventListener("click", (e) => {
       e.target.innerHTML = "Visa allt data"
     }
   }
-
 })
