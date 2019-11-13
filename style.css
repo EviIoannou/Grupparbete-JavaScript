@@ -143,6 +143,11 @@ header h1 {
   margin: 1em;
 }
 
+/*felmeddelande*/
+.fel{
+  border: 0.1em dotted rgb(201, 0, 0);
+  color: rgb(201, 0, 0);
+}
 /*Style area with info about stations*/
 main {
   width: 90vw;

@@ -5,14 +5,18 @@ var dateToday = (new Date()).toISOString();
 var startDate = document.getElementById("start");
 var endDate = document.getElementById("end");
 
+var stations = document.getElementById("stationer");
 var station = document.getElementById("station");
+var choice = document.getElementById("choice");
 var attributer = document.getElementById("attributer");
-var h4 = document.getElementsByTagName("p");
+var display = document.getElementById("display");
+var h4 = document.getElementsByTagName("h4");
 
 var choose = document.getElementById("choose");
 var tbody = document.getElementsByTagName("tbody");
 var table = document.getElementById("valfriData"); // Jag har flyttat "table" upp så att den är global och funkar överallt
 var lineGraph = document.getElementById("lineGraph");
+var showAll = document.getElementById("showAll");
 
 fetch("http://data.goteborg.se/RiverService/v1.1/MeasureSites/66473147-1c20-40c1-b1f9-6d18f1e620bf?format=json")
   .then(response => {
@@ -149,49 +153,14 @@ body[0].addEventListener("click", (e) => {
   }
 
   //att skapa användarens alternativ dynamiskt
-  if (e.target.id == "station") {
-    let stationIndex = parseInt(e.target.selectedIndex) - 1;
-    console.log(e.target.selectedIndex);
-    console.log(stationIndex);
-    attributer.innerHTML = "";
-    let heading = document.getElementsByTagName("h4");
-    console.log(heading);
-    heading[0].classList.remove("hidden");
-
-    if (stationIndex >= 0) {
-      res[stationIndex].MeasureParameters.forEach(parameter => {
-        let div = document.createElement("span");
-        let label = document.createElement("label");
-        let input = document.createElement("input");
-
-        label.setAttribute("for", (parameter.Code + stationIndex));
-        label.innerHTML = parameter.Description
-
-        input.type = "radio";
-        input.name = "alternativ";
-        input.value = parameter.Code;
-        input.id = parameter.Code + stationIndex;
-        input.appendChild(document.createTextNode(parameter.Description));
-
-
-        div.appendChild(input);
-        div.appendChild(label);
-        attributer.appendChild(div);
-      })
-    }
-
-  }
-
-
+  let noStation;
   station.addEventListener('change', (e) => {
     let stationIndex = `${e.target.value}`;
     console.log("You clicked" + " " + stationIndex);
     attributer.innerHTML = "";
-    let heading = document.getElementsByTagName("h4");
-    console.log(heading);
-    heading[0].classList.remove("hidden");
 
-    if (`${e.target.value}` != "default") {
+    if (stationIndex != "default") {
+
       res[stationIndex].MeasureParameters.forEach(parameter => {
         let div = document.createElement("span");
         let label = document.createElement("label");
@@ -211,6 +180,22 @@ body[0].addEventListener("click", (e) => {
         div.appendChild(label);
         attributer.appendChild(div);
       })
+      //ta bort klass "hidden" för att visa på skärmen val för parameter och display
+      choice.classList.remove("hidden");
+      display.classList.remove("hidden")
+      //om det finns felmeddelande för station,det försvinner om stationen är giltig
+      if (noStation.innerHTML != "undefined") {
+        stations.removeChild(noStation)
+      }
+
+    } else {
+
+      if (display.classList != "hidden") {
+        display.classList.add("hidden")
+      }
+      if (choice.classList != "hidden") {
+        choice.classList.add("hidden")
+      }
     }
   });
 
@@ -221,6 +206,29 @@ body[0].addEventListener("click", (e) => {
     let station = document.getElementById("station").selectedIndex;
     console.log(station);
 
+    //felmeddelande om man har inte väljat station
+    if (station == 0) {
+      noStation = document.createElement("p");
+      noStation.id = "noStation";
+      noStation.classList.add("fel");
+      noStation.innerHTML = "Välj en station";
+      stations.appendChild(noStation);
+      //dölja sektioner med parameter, tabell och diagram
+      if (display.classList != "hidden") {
+        display.classList.add("hidden")
+      }
+      if (table.classList != "hidden") {
+        table.classList.add("hidden")
+      }
+      if (lineGraph.classList != "hidden") {
+        lineGraph.classList.add("hidden")
+      }
+      if (main.classList == "hidden") {
+        main.classList.remove("hidden");
+        showAll.classList.add("hidden");
+      }
+    }
+    //fortsätta med att hämta data när man väljer giötig station
     let valdstation = document.getElementsByTagName("option")[station].id;
     console.log(valdstation);
 
@@ -238,7 +246,7 @@ body[0].addEventListener("click", (e) => {
 
     let graph = document.getElementById("graph");
     let tabell = document.getElementById("tabell");
-    let showAll = document.getElementById("showAll");
+
     fetch("http://data.goteborg.se/RiverService/v1.1/Measurements/753ef3b1-259d-4e5f-b981-4ef377376164/" + `${valdstation}` + "/" + `${val}` + "/" + `${xv}` + "/" + `${yv}` + "?format=json")
       .then(response => {
         return response.json();
@@ -300,7 +308,7 @@ body[0].addEventListener("click", (e) => {
             table.classList.add("hidden");
             //tabellen kommer att försvinna och diagramen kommer att visas
           }
-      
+
           console.log(newRes);
 
           lineGraph.classList.remove("hidden");
@@ -383,14 +391,13 @@ body[0].addEventListener("click", (e) => {
 
   }
 
-  if(e.target.id=="showAll"){
-    if(main.classList=="hidden"){
+  if (e.target.id == "showAll") {
+    if (main.classList == "hidden") {
       main.classList.remove("hidden");
-      e.target.innerHTML="Göm allt data"
-    }
-    else{
+      e.target.innerHTML = "Göm allt data"
+    } else {
       main.classList.add("hidden");
-      e.target.innerHTML="Visa allt data"
+      e.target.innerHTML = "Visa allt data"
     }
   }
 
