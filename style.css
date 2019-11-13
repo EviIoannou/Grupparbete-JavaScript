@@ -11,7 +11,7 @@ body{
   margin: 1em;
   font-family: 'Montserrat', sans-serif;
   color: white;
-  background-color: rgb(124, 187, 226);
+  background-color: rgb(93, 164, 206);
   border-radius: 6px;
   padding: 0.4em;
  }
@@ -35,7 +35,7 @@ html {
   width: 70%;
 }
 section{
-  border: solid 0.1em black;
+  border: solid 0.1em rgb(94, 94, 94);
 }
 
 #station, input[type="date"]{
@@ -235,4 +235,15 @@ article div{
   #display label, input{
     display: inline;
   }
+  #display h4, label{
+    display: block;
+  }
+
+  #choice label, input{
+    display: inline;
+  }
+  #choice h4, label{
+    display: block;
+  }
+ 
 }
