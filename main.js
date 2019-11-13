@@ -14,6 +14,7 @@ var tbody = document.getElementsByTagName("tbody");
 var table = document.getElementById("valfriData"); // Jag har flyttat "table" upp så att den är global och funkar överallt
 var lineGraph = document.getElementById("lineGraph");
 var choice = document.getElementById("choice");
+var errorMessage = document.getElementById("error-message");
 
 fetch("http://data.goteborg.se/RiverService/v1.1/MeasureSites/66473147-1c20-40c1-b1f9-6d18f1e620bf?format=json")
   .then(response => {
@@ -110,7 +111,7 @@ function defaultDates() {
   startDate.value = defaultStart;
 }
 
-defaultDates();
+//defaultDates();
 
 var parameterSV = "";
 
@@ -157,7 +158,6 @@ body[0].addEventListener("click", (e) => {
     attributer.innerHTML = "";
     let heading = document.getElementsByTagName("h4");
     console.log(heading);
-    // heading[0].classList.remove("hidden");
     choice.classList.remove("hidden"); 
 
     if (stationIndex >= 0) {
@@ -191,7 +191,6 @@ body[0].addEventListener("click", (e) => {
     attributer.innerHTML = "";
     let heading = document.getElementsByTagName("h4");
     console.log(heading);
-    // heading[0].classList.remove("hidden");
     choice.classList.remove("hidden"); 
 
     if (`${e.target.value}` != "default") {
@@ -220,6 +219,8 @@ body[0].addEventListener("click", (e) => {
 
   if (e.target.id == "choose") {
 
+    errorMessage.innerHTML = "";
+
     tbody[0].innerHTML = "";
     let station = document.getElementById("station").selectedIndex;
     console.log(station);
@@ -239,6 +240,22 @@ body[0].addEventListener("click", (e) => {
     var y = document.getElementById("end")
     var yv = y.value
 
+    /** datum felhantering */
+
+    try {
+      if ( (yv == "") && (xv == "")) {
+        defaultDates();
+        throw "Antingen behöver du välja start och slutdatum eller använda vår default datum";
+      }
+      if (xv == "") throw "Du behöver välja startdatum";
+      if (yv == "") throw "Du behöver välja slutdatum";
+    }
+    catch(err) {
+        errorMessage.classList.remove("hidden"); 
+        errorMessage.innerHTML = "*" + err;
+    }
+  
+
     let graph = document.getElementById("graph");
     let tabell = document.getElementById("tabell");
     let showAll = document.getElementById("showAll");
@@ -247,9 +264,24 @@ body[0].addEventListener("click", (e) => {
         return response.json();
       })
       .then(newRes => {
+
+        /** felhantering */
+
+  
+        let startYear = parseInt(startDate.value.slice(0,4));
+        let startMonth = parseInt(startDate.value.slice(4,7));
+        let startDay = parseInt(startDate.value.slice(8));
+
+        let endYear = parseInt(endDate.value.slice(0,4));
+        let endMonth = parseInt(endDate.value.slice(4,7));
+        let endDay = parseInt(endDate.value.slice(8));
+        
+        //if ()
+
+
         if (newRes.length == 0) {
-          console.log("no data")
           alert("Ingen data finns");
+
 
         } else if (tabell.checked) {
 
@@ -293,11 +325,9 @@ body[0].addEventListener("click", (e) => {
             stationInfo.appendChild(v);
             tbody[0].appendChild(stationInfo);
 
-
-
             console.log(day + " " + month + " " + year + " " + `${val}` + " " + value)
           });
-        } else if (graph.checked) {
+          } else if (graph.checked) {
 
           if (table.classList != "hidden") {
             table.classList.add("hidden");
@@ -311,6 +341,7 @@ body[0].addEventListener("click", (e) => {
           //göm divar med alla information och visa knapp för att kunna se dem igen
           main.classList.add("hidden");
           showAll.classList.remove("hidden");
+
 
           /** start creating the graph using canvasjs.min.js */
 
@@ -370,21 +401,24 @@ body[0].addEventListener("click", (e) => {
               color: "#3BD8D9",
               dataPoints: data
             }]
-          });
-          chart.render();
-
-          function toogleDataSeries(e) {
-            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-              e.dataSeries.visible = false;
-            } else {
-              e.dataSeries.visible = true;
-            }
+            });
             chart.render();
-          }
-        }
-      })
 
+            function toogleDataSeries(e) {
+              if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+              } else {
+                e.dataSeries.visible = true;
+              }
+              chart.render();
+            }
+          }
+      })
+      
+      
   }
+
+
 
   if(e.target.id=="showAll"){
     if(main.classList=="hidden"){

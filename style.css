@@ -114,6 +114,10 @@ tr:nth-child(even) {background-color: rgb(146, 203, 236);}
   box-shadow: 5px 5px 5px rgba(153, 147, 150, 0.705);
 }
 
+#error-message {
+  color: red;
+}
+
 
 /*----style scrollbar- !does not work for firefox!----*/
 tbody::-webkit-scrollbar {
