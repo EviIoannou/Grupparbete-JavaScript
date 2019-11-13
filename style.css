@@ -11,7 +11,7 @@ body{
   margin: 1em;
   font-family: 'Montserrat', sans-serif;
   color: white;
-  background-color: rgb(124, 187, 226);
+  background-color: rgb(93, 164, 206);
   border-radius: 6px;
   padding: 0.4em;
  }
@@ -35,7 +35,7 @@ html {
   width: 70%;
 }
 section{
-  border: solid 0.1em black;
+  border: solid 0.1em rgb(94, 94, 94);
 }
 
 #station, input[type="date"]{
@@ -147,6 +147,11 @@ header h1 {
   margin: 1em;
 }
 
+/*felmeddelande*/
+.fel{
+  border: 0.1em dotted rgb(201, 0, 0);
+  color: rgb(201, 0, 0);
+}
 /*Style area with info about stations*/
 main {
   width: 90vw;
@@ -199,10 +204,6 @@ body{
 }
 
 
-#display label, input{
-  display: block;
-}
-
 /* ----padding, margin, width----*/
 article div{
   padding-left:0;
@@ -211,9 +212,9 @@ article div{
   padding-bottom: 0.5em;
 }
 .topnav{
-  margin-bottom: 0.5em;
-  width: 50vw;
+  margin-bottom: 1em;
 }
+
 #station{
   width: 50%;
 }
@@ -236,4 +237,22 @@ article div{
     grid-template-rows: auto auto auto auto auto;
     grid-gap: 1em;
   }
+  .topnav, #valfriData, #lineGraph{
+    width: 70vw;
+  }
+
+  #display label, input{
+    display: inline;
+  }
+  #display h4, label{
+    display: block;
+  }
+
+  #choice label, input{
+    display: inline;
+  }
+  #choice h4, label{
+    display: block;
+  }
+ 
 }
