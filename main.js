@@ -220,6 +220,7 @@ body[0].addEventListener("click", (e) => {
   if (e.target.id == "choose") {
 
     errorMessage.innerHTML = "";
+    errorMessage.classList.add("hidden"); 
 
     tbody[0].innerHTML = "";
     let station = document.getElementById("station").selectedIndex;
@@ -228,12 +229,17 @@ body[0].addEventListener("click", (e) => {
     let valdstation = document.getElementsByTagName("option")[station].id;
     console.log(valdstation);
 
+    var val = "";
+    console.log(val);
+    
     var ele = document.getElementsByName('alternativ');
     for (i = 0; i < ele.length; i++) {
       if (ele[i].checked)
-        var val = ele[i].value;
+        val = ele[i].value;
       var sv = ele[i].childNodes[0].data;
     }
+    console.log(val);
+    
     var x = document.getElementById("start")
     var xv = x.value
 
@@ -242,6 +248,10 @@ body[0].addEventListener("click", (e) => {
 
     /** datum felhantering */
 
+    var startUnix = Date.parse(xv);
+    var endUnix= Date.parse(yv);
+    var todayUnix = Date.parse(new Date());
+
     try {
       if ( (yv == "") && (xv == "")) {
         defaultDates();
@@ -249,6 +259,9 @@ body[0].addEventListener("click", (e) => {
       }
       if (xv == "") throw "Du behöver välja startdatum";
       if (yv == "") throw "Du behöver välja slutdatum";
+      if (startUnix > todayUnix) throw "Ange ett giltigt startdatum";
+      if (startUnix > endUnix) throw "Startdatum är större än slutdatum";
+      if (val == "") throw "Välj en parameter";
     }
     catch(err) {
         errorMessage.classList.remove("hidden"); 
@@ -280,10 +293,14 @@ body[0].addEventListener("click", (e) => {
 
 
         if (newRes.length == 0) {
-          alert("Ingen data finns");
+          if ( (startUnix < todayUnix) && (startUnix < endUnix) ) {
+            errorMessage.classList.remove("hidden"); 
+            errorMessage.innerHTML = "Ingen data finns för valda datum";
+          }
 
-
-        } else if (tabell.checked) {
+        } 
+        
+        if (tabell.checked) {
 
           //göm diagram
           if (lineGraph.classList != "hidden") {
@@ -412,6 +429,9 @@ body[0].addEventListener("click", (e) => {
               }
               chart.render();
             }
+          } else {
+            errorMessage.classList.remove("hidden"); 
+            errorMessage.innerHTML = "*Välj display";
           }
       })
       
