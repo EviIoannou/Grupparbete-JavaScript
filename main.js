@@ -115,6 +115,8 @@ function defaultDates() {
 
 body[0].addEventListener("click", (e) => {
 
+  
+
   // de tre console.log() nedanför hjälper man hänga med olika events som händer
   console.log(e);
   console.log(e.target);
@@ -147,8 +149,6 @@ body[0].addEventListener("click", (e) => {
   }
 
   //att skapa användarens alternativ dynamiskt
-
-  let noStation;
 
   station.addEventListener('change', (e) => {
     let stationIndex = `${e.target.value}`;
@@ -198,33 +198,11 @@ body[0].addEventListener("click", (e) => {
 
     errorMessage.innerHTML = "";
     errorMessage.classList.add("hidden"); 
-
+   
     tbody[0].innerHTML = "";
     let station = document.getElementById("station").selectedIndex;
     console.log(station);
 
-    //felmeddelande om man har inte väljat station
-    if (station == 0) {
-      noStation = document.createElement("p");
-      noStation.id = "noStation";
-      noStation.classList.add("fel");
-      noStation.innerHTML = "Välj en station";
-      stations.appendChild(noStation);
-      //dölja sektioner med parameter, tabell och diagram
-      if (display.classList != "hidden") {
-        display.classList.add("hidden")
-      }
-      if (table.classList != "hidden") {
-        table.classList.add("hidden")
-      }
-      if (lineGraph.classList != "hidden") {
-        lineGraph.classList.add("hidden")
-      }
-      if (main.classList == "hidden") {
-        main.classList.remove("hidden");
-        showAll.classList.add("hidden");
-      }
-    }
     //fortsätta med att hämta data när man väljer giltig station
     let val = "";
     let valdstation = document.getElementsByTagName("option")[station].id;
@@ -260,7 +238,6 @@ body[0].addEventListener("click", (e) => {
       if (startUnix > endUnix) throw "Startdatum är större än slutdatum";
       if (station == 0) throw "Välj station";
       if (val == "") throw "Välj en parameter";
-      //if ( (!tabell.checked) && (!graph.checked)) throw "sth strh sth";
     }
     catch(err) {
         errorMessage.classList.remove("hidden"); 
